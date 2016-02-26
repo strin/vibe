@@ -50,20 +50,52 @@ swipe-card .swipe-ctrl {
 }
 
 swipe-card .title {
-  height: 100px;
+  position: absolute;
+  height: 50px;
+  width: 100%;
   padding: 5px;
+  padding-top: 50px;
   line-height: 30px;
-  color: #ccc;
+  color: #fff;
+  z-index: 10;
+  bottom: 0px;
+  font-family: helvetica neue;
+  margin-bottom: 0px;
+  background-image: linear-gradient( top, 
+      rgba( 0, 0, 0, 0 ) 0%, 
+      rgba( 0, 0, 0, 0.8 ) 100% );
+  background-image: -moz-linear-gradient( top, 
+      rgba( 0, 0, 0, 0 ) 0%, 
+      rgba( 0, 0, 0, 0.8 ) 100% );
+  background-image: -ms-linear-gradient( top, 
+      rgba( 0, 0, 0, 0 ) 0%, 
+      rgba( 0, 0, 0, 0.8 ) 100% );
+  background-image: -o-linear-gradient( top, 
+      rgba( 0, 0, 0, 0 ) 0%, 
+      rgba( 0, 0, 0, 0.8 ) 100% );
+  background-image: -webkit-linear-gradient( top, 
+      rgba( 0, 0, 0, 0 ) 0%, 
+      rgba( 0, 0, 0, 0.8 ) 100% );
+
+  height: auto;
 }
+
 swipe-card .image {
+  position: absolute;
   vertical-align: middle;
   height: 100%;
   overflow: hidden;
 }
 
 swipe-card .image img {
-  width: 100%;
+  width: auto;
+  height: 100%;
   border-radius: 0px 0px 4px 4px;
+  left: 0px;
+}
+
+swipe-card .image.move {
+  right: 0px !important;
 }
 
 #start-card {
@@ -88,7 +120,7 @@ swipe-card .image img {
 
 @-webkit-keyframes bounceIn {
   0% {
-    -webkit-transform: scale(0,0);
+    -webkit-transform: scale(0.8,0.8);
   }
   70% {
     -webkit-transform: scale(1.2,1.2);
@@ -102,5 +134,5 @@ swipe-card.pop-in-start {
   -webkit-transform: scale(0,0);
 }
 swipe-card.pop-in {
-  -webkit-animation: bounceIn 0.4s ease-out;
+  -webkit-animation: bounceIn 0.2s ease-out;
 }

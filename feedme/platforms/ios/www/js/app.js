@@ -31,6 +31,29 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
   }
 })
 
+.directive('pan', function(){ 
+   return {
+     restrict: 'A',
+     link: function(scope, elem, attr) {
+         elem.on('load', function() {
+            var w = elem.width,
+                h = elem.height;
+
+            var div = elem.parent();
+            div[0].style.right = '-' + (elem[0].width - window.innerWidth) +'px';
+            
+
+            setTimeout(function() {
+              div[0].classList.add('move');
+              div[0].style['transition'] = '5s';
+              div[0].style['-webkit-transition'] = '5s';
+              div[0].style['-moz-transition'] = '5s';
+            }, 1000);
+         });
+     }
+   };
+})
+
 
 .controller('CardsCtrl', function($scope, $http, $ionicSwipeCardDelegate) {
 
@@ -57,20 +80,24 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
   }).then(function successCallback(response) {
       var feeds = response.data.feed;
       $scope.cardTypes = [];
+      cardId = 0;
       for(var feed of feeds) {
         if(feed.image.length == 0) continue;
         $scope.cardTypes.push({
           'title': feed.title,
-          'image': feed.image
+          'image': feed.image,
+          'cardId': cardId
         })
+        cardId += 1;
       }
-      console.log('cards', $scope.cards)
+      $scope.cardSwiped();
   }, function errorCallback(response) {
     // called asynchronously if an error occurs
     // or server returns response with an error status.
   });
 
   $scope.cards = Array.prototype.slice.call($scope.cardTypes, 0, 0);
+  $scope.cardIndex = 0;
 
   $scope.cardSwiped = function(index) {
     $scope.addCard();
@@ -81,7 +108,10 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
   };
 
   $scope.addCard = function() {
-    var newCard = $scope.cardTypes[Math.floor(Math.random() * $scope.cardTypes.length)];
+    var newCard = $scope.cardTypes[$scope.cardIndex];
+    if($scope.cardIndex + 1 < $scope.cardTypes.length) {
+      $scope.cardIndex += 1;
+    }
     newCard.id = Math.random();
     $scope.cards.push(angular.extend({}, newCard));
     console.log('new card image', newCard.image);

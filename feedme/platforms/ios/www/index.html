@@ -33,21 +33,25 @@
       </ion-header-bar> -->
 
     <swipe-cards>
-      <swipe-card on-card-swipe="cardSwiped()" id="start-card">
-        Swipe down for a new card
-      </swipe-card>
+      
       <swipe-card ng-repeat="card in cards" on-destroy="cardDestroyed($index)" on-card-swipe="cardSwiped($index)">
         <div ng-controller="CardCtrl" class="swipe-ctrl">
           <h3 class="title">
-            {{card.title}}
+            <b>{{card.title}}</b>
           </h3>
           <div class="image">
-            <img ng-src="{{card.image}}">
+            <!--TODO: right now, we prefetch all images to improve load time.-->
+            <!--TODO: probably need a smarter way to do this. i.e. do not prefetch all. -->
+            <!-- <link rel="prefetch" ng-href="{{card.image}}" style="display: hidden;">  -->
+            <img ng-src="{{card.image}}" pan>
           </div>
         </div>
       </swipe-card>
     </swipe-cards>
   </ion-pane>
+
+  <script src="js/vendor/jquery.dotdotdot.js"></script>
+  <script src="js/angular-dotdotdot.js"></script>
 </body>
 
 </html>

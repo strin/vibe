@@ -3,7 +3,35 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
+
+$global = {};
+
 angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
+
+.config(function($stateProvider, $urlRouterProvider) {
+
+  // Ionic uses AngularUI Router which uses the concept of states
+  // Learn more here: https://github.com/angular-ui/ui-router
+  // Set up the various states which the app can be in.
+  // Each state's controller can be found in controllers.js
+  $stateProvider
+
+  // setup an abstract state for the tabs directive
+  .state('content', {
+    url: '/content/:cardId',    
+    templateUrl: 'templates/content.html',
+    controller: 'ContentCtrl'
+  })
+
+  .state('main', {
+    url: '/',    
+    templateUrl: 'templates/main.html',
+    controller: 'CardsCtrl'
+  })
+
+  // if none of the above states are matched, use this as the fallback
+  $urlRouterProvider.otherwise('/');
+})
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -41,9 +69,13 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
 
             var div = elem.parent();
             div[0].style.right = '-' + (elem[0].width - window.innerWidth) +'px';
+            
 
             setTimeout(function() {
               div[0].classList.add('move');
+              div[0].style['transition'] = '10s';
+              div[0].style['-webkit-transition'] = '10s';
+              div[0].style['-moz-transition'] = '10s';
             }, 1000);
          });
      }
@@ -51,9 +83,10 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
 })
 
 
-.controller('CardsCtrl', function($scope, $http, $ionicSwipeCardDelegate) {
 
-  $scope.cardTypes = [{
+.controller('CardsCtrl', function($scope, $state, $http, $ionicSwipeCardDelegate) {
+
+  $global.cardTypes = [{
     title: 'Swipe down to clear the card',
     image: 'img/pic.png'
   }, {
@@ -75,13 +108,14 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
     url: 'http://54.149.190.97:8889/'
   }).then(function successCallback(response) {
       var feeds = response.data.feed;
-      $scope.cardTypes = [];
+      $global.cardTypes = [];
       cardId = 0;
       for(var feed of feeds) {
         if(feed.image.length == 0) continue;
-        $scope.cardTypes.push({
+        $global.cardTypes.push({
           'title': feed.title,
           'image': feed.image,
+          'content': feed.content,
           'cardId': cardId
         })
         cardId += 1;
@@ -92,7 +126,7 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
     // or server returns response with an error status.
   });
 
-  $scope.cards = Array.prototype.slice.call($scope.cardTypes, 0, 0);
+  $scope.cards = Array.prototype.slice.call($global.cardTypes, 0, 0);
   $scope.cardIndex = 0;
 
   $scope.cardSwiped = function(index) {
@@ -104,14 +138,15 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
   };
 
   $scope.addCard = function() {
-    var newCard = $scope.cardTypes[$scope.cardIndex];
-    if($scope.cardIndex + 1 < $scope.cardTypes.length) {
+    var newCard = $global.cardTypes[$scope.cardIndex];
+    if($scope.cardIndex + 1 < $global.cardTypes.length) {
       $scope.cardIndex += 1;
     }
     newCard.id = Math.random();
     $scope.cards.push(angular.extend({}, newCard));
     console.log('new card image', newCard.image);
   }
+
 })
 
 .controller('CardCtrl', function($scope, $ionicSwipeCardDelegate) {
@@ -119,4 +154,18 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
     var card = $ionicSwipeCardDelegate.getSwipeableCard($scope);
     card.swipe();
   };
-});
+})
+
+.controller('ContentCtrl', function($scope, $stateParams) {
+  console.log($global.cardTypes);
+  for(var cardType of $global.cardTypes) { // find content with cardId.
+    if(cardType.cardId == $stateParams.cardId) {
+      console.log("cardContent", cardType.content);
+      $scope.content = cardType.content;
+      $scope.title = cardType.title;
+    }
+  }
+  
+})
+
+;
