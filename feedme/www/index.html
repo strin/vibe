@@ -40,6 +40,9 @@
             <b>{{card.title}}</b>
           </h3>
           <div class="image">
+            <!--TODO: right now, we prefetch all images to improve load time.-->
+            <!--TODO: probably need a smarter way to do this. i.e. do not prefetch all. -->
+            <link rel="prefetch" href="{{card.image}}" style="display: hidden;"> 
             <img ng-src="{{card.image}}">
           </div>
         </div>
