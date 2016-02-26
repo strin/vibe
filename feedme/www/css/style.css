@@ -50,19 +50,42 @@ swipe-card .swipe-ctrl {
 }
 
 swipe-card .title {
+  position: absolute;
   height: 100px;
+  width: 100%;
   padding: 5px;
   line-height: 30px;
   color: #ccc;
+  z-index: 10;
+  bottom: 0px;
+  margin-bottom: 0px;
+  background-image: linear-gradient( top, 
+      rgba( 0, 0, 0, 0 ) 0%, 
+      rgba( 0, 0, 0, 0.5 ) 100% );
+  background-image: -moz-linear-gradient( top, 
+      rgba( 0, 0, 0, 0 ) 0%, 
+      rgba( 0, 0, 0, 0.5 ) 100% );
+  background-image: -ms-linear-gradient( top, 
+      rgba( 0, 0, 0, 0 ) 0%, 
+      rgba( 0, 0, 0, 0.5 ) 100% );
+  background-image: -o-linear-gradient( top, 
+      rgba( 0, 0, 0, 0 ) 0%, 
+      rgba( 0, 0, 0, 0.5 ) 100% );
+  background-image: -webkit-linear-gradient( top, 
+      rgba( 0, 0, 0, 0 ) 0%, 
+      rgba( 0, 0, 0, 0.5 ) 100% );
 }
+
 swipe-card .image {
+  position: absolute;
   vertical-align: middle;
   height: 100%;
   overflow: hidden;
 }
 
 swipe-card .image img {
-  width: 100%;
+  width: auto;
+  height: 100%;
   border-radius: 0px 0px 4px 4px;
 }
 
