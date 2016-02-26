@@ -90,12 +90,12 @@ swipe-card .image {
 swipe-card .image img {
   width: auto;
   height: 100%;
-  border-radius: 0px 0px 4px 4px;
+  border-radius: 0px 0px 0px 0px;
   left: 0px;
 }
 
 swipe-card .image.move {
-  right: 0px !important;
+  right: -10px !important;
 }
 
 #start-card {

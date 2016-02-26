@@ -90,7 +90,7 @@ swipe-card .image {
 swipe-card .image img {
   width: auto;
   height: 100%;
-  border-radius: 0px 0px 4px 4px;
+  border-radius: 0px 0px 0px 0px;
   left: 0px;
 }
 
