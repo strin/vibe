@@ -95,7 +95,7 @@ swipe-card .image img {
 }
 
 swipe-card .image.move {
-  right: 0px !important;
+  right: -10px !important;
 }
 
 #start-card {

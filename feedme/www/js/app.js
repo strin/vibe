@@ -108,6 +108,7 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
     url: 'http://54.149.190.97:8889/'
   }).then(function successCallback(response) {
       var feeds = response.data.feed;
+      feeds.reverse(); // in reverse time order.
       $global.cardTypes = [];
       cardId = 0;
       for(var feed of feeds) {
