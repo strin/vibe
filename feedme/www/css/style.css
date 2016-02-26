@@ -55,25 +55,25 @@ swipe-card .title {
   width: 100%;
   padding: 5px;
   line-height: 30px;
-  color: #ccc;
+  color: #fff;
   z-index: 10;
   bottom: 0px;
   margin-bottom: 0px;
   background-image: linear-gradient( top, 
       rgba( 0, 0, 0, 0 ) 0%, 
-      rgba( 0, 0, 0, 0.5 ) 100% );
+      rgba( 0, 0, 0, 0.8 ) 100% );
   background-image: -moz-linear-gradient( top, 
       rgba( 0, 0, 0, 0 ) 0%, 
-      rgba( 0, 0, 0, 0.5 ) 100% );
+      rgba( 0, 0, 0, 0.8 ) 100% );
   background-image: -ms-linear-gradient( top, 
       rgba( 0, 0, 0, 0 ) 0%, 
-      rgba( 0, 0, 0, 0.5 ) 100% );
+      rgba( 0, 0, 0, 0.8 ) 100% );
   background-image: -o-linear-gradient( top, 
       rgba( 0, 0, 0, 0 ) 0%, 
-      rgba( 0, 0, 0, 0.5 ) 100% );
+      rgba( 0, 0, 0, 0.8 ) 100% );
   background-image: -webkit-linear-gradient( top, 
       rgba( 0, 0, 0, 0 ) 0%, 
-      rgba( 0, 0, 0, 0.5 ) 100% );
+      rgba( 0, 0, 0, 0.8 ) 100% );
 }
 
 swipe-card .image {
