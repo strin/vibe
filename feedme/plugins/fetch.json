@@ -1,0 +1,20 @@
+{
+    "com.ionic.keyboard": {
+        "source": {
+            "type": "local",
+            "path": "/Users/mhartington/.plugman/cache/com.ionic.keyboard/1.0.3/package"
+        }
+    },
+    "org.apache.cordova.console": {
+        "source": {
+            "type": "local",
+            "path": "/Users/mhartington/.plugman/cache/org.apache.cordova.console/0.2.11/package"
+        }
+    },
+    "org.apache.cordova.device": {
+        "source": {
+            "type": "local",
+            "path": "/Users/mhartington/.plugman/cache/org.apache.cordova.device/0.2.12/package"
+        }
+    }
+}
