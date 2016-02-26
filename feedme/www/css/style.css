@@ -85,12 +85,20 @@ swipe-card .image {
   vertical-align: middle;
   height: 100%;
   overflow: hidden;
+  transition:5s;
+  -webkit-transition:5s;
+  -moz-transition:5s;
 }
 
 swipe-card .image img {
   width: auto;
   height: 100%;
   border-radius: 0px 0px 4px 4px;
+  
+}
+
+swipe-card .image.move {
+  right: 0px !important;
 }
 
 #start-card {

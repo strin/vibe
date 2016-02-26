@@ -42,8 +42,8 @@
           <div class="image">
             <!--TODO: right now, we prefetch all images to improve load time.-->
             <!--TODO: probably need a smarter way to do this. i.e. do not prefetch all. -->
-            <link rel="prefetch" href="{{card.image}}" style="display: hidden;"> 
-            <img ng-src="{{card.image}}">
+            <link rel="prefetch" ng-href="{{card.image}}" style="display: hidden;"> 
+            <img ng-src="{{card.image}}" pan>
           </div>
         </div>
       </swipe-card>
