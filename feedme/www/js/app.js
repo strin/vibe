@@ -68,11 +68,16 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
                 h = elem.height;
 
             var div = elem.parent();
-            div[0].style.right = '-' + (elem[0].width - window.innerWidth) +'px';
+            var translateDistance = (elem[0].width - window.innerWidth);
+            div[0].style.right = '-' + translateDistance +'px'; // initial card position.
             
 
             setTimeout(function() {
-              div[0].classList.add('move');
+              // div[0].classList.add('move');
+              div[0].style['-webkit-transform'] = 'translate3d(-' + translateDistance + 'px,0, 0)';
+              div[0].style['transform'] = 'translate3d(-' + translateDistance + 'px,0, 0)';
+              div[0].style['-o-transform'] = 'translate3d(-' + translateDistance + 'px,0, 0)';
+              div[0].style['-ms-transform'] = 'translate3d(-' + translateDistance + 'px,0, 0)';
               div[0].style['transition'] = '10s';
               div[0].style['-webkit-transition'] = '10s';
               div[0].style['-moz-transition'] = '10s';
