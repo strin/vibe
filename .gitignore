@@ -5,3 +5,7 @@ tags
 *.swp
 *.sqlite
 upload/
+feedme/www/lib
+feedme/platforms
+feedme/bower_components
+external
