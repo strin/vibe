@@ -165,3 +165,14 @@ swipe-card.pop-in {
     z-index: -1;
     opacity: 0;
 }
+
+
+.title.title-center.header-item {
+  font-family: helvetica neue;
+}
+
+.vibe-content {
+  font-family: 'open sans', sans-serif;
+  line-height: 1.5;
+  font-size: 20px;
+}
