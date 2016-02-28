@@ -39,6 +39,11 @@ swipe-card {
   overflow: hidden;
   height: 100%;
   -webkit-animation-fill-mode: forwards;
+
+  -moz-box-shadow:0 0 20px 0 black;
+  -webkit-box-shadow:0 0 20px 0 black;
+  box-shadow:0 0 20px 0 black;
+  z-index: 10;
 }
 
 swipe-card .swipe-card{
