@@ -8,7 +8,7 @@ $global = {};
 
 angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -27,10 +27,12 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
     url: '/',    
     templateUrl: 'templates/main.html',
     controller: 'CardsCtrl'
-  })
+  });
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/');
+
+  $ionicConfigProvider.backButton.text('').icon('ion-chevron-left');
 })
 
 .run(function($ionicPlatform) {
@@ -68,11 +70,16 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
                 h = elem.height;
 
             var div = elem.parent();
-            div[0].style.right = '-' + (elem[0].width - window.innerWidth) +'px';
+            var translateDistance = (elem[0].width - window.innerWidth);
+            div[0].style.right = '-' + translateDistance +'px'; // initial card position.
             
 
             setTimeout(function() {
-              div[0].classList.add('move');
+              // div[0].classList.add('move');
+              div[0].style['-webkit-transform'] = 'translate3d(-' + translateDistance + 'px,0, 0)';
+              div[0].style['transform'] = 'translate3d(-' + translateDistance + 'px,0, 0)';
+              div[0].style['-o-transform'] = 'translate3d(-' + translateDistance + 'px,0, 0)';
+              div[0].style['-ms-transform'] = 'translate3d(-' + translateDistance + 'px,0, 0)';
               div[0].style['transition'] = '10s';
               div[0].style['-webkit-transition'] = '10s';
               div[0].style['-moz-transition'] = '10s';
@@ -139,13 +146,17 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
   };
 
   $scope.addCard = function() {
-    var newCard = $global.cardTypes[$scope.cardIndex];
-    if($scope.cardIndex + 1 < $global.cardTypes.length) {
-      $scope.cardIndex += 1;
+    var cardStackSize = 1; // pre-fetch three cards.
+    for(var cardi = 0; cardi < cardStackSize; cardi++) {
+      if($scope.cardIndex < $global.cardTypes.length) {  
+        var newCard = $global.cardTypes[$scope.cardIndex];    
+        $scope.cardIndex += 1;  
+
+        newCard.id = Math.random();
+        $scope.cards.push(angular.extend({}, newCard));
+        console.log('new card image', newCard.image);
+      }
     }
-    newCard.id = Math.random();
-    $scope.cards.push(angular.extend({}, newCard));
-    console.log('new card image', newCard.image);
   }
 
 })

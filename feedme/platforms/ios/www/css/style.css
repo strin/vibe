@@ -39,6 +39,11 @@ swipe-card {
   overflow: hidden;
   height: 100%;
   -webkit-animation-fill-mode: forwards;
+
+  -moz-box-shadow:0 0 20px 0 black;
+  -webkit-box-shadow:0 0 20px 0 black;
+  box-shadow:0 0 20px 0 black;
+  z-index: 10;
 }
 
 swipe-card .swipe-card{
@@ -135,4 +140,39 @@ swipe-card.pop-in-start {
 }
 swipe-card.pop-in {
   -webkit-animation: bounceIn 0.2s ease-out;
+}
+
+.no-text {
+    position: fixed;
+    top: 45%;
+    left: 10px;
+    color: #33cd5f;
+    font-size: 40px;
+    font-family: helvetica neue;
+    font-weight:  bold;
+    z-index: -1;
+    opacity: 0;
+}
+
+.yes-text {
+    position: fixed;
+    top: 45%;
+    right: 10px;
+    color: #ef473a;
+    font-size: 40px;
+    font-family: helvetica neue;
+    font-weight:  bold;
+    z-index: -1;
+    opacity: 0;
+}
+
+
+.title.title-center.header-item {
+  font-family: helvetica neue;
+}
+
+.vibe-content {
+  font-family: 'open sans', sans-serif;
+  line-height: 1.5;
+  font-size: 20px;
 }

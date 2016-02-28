@@ -12,6 +12,8 @@
   <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
+  <!-- TODO: this may slow down app -->
+  <link href="https://fonts.googleapis.com/css?family=Open%20Sans%3A400%2C300%2C700" rel="stylesheet" type="text/css">
 
   <!-- ionic/angularjs js -->
 
@@ -22,10 +24,11 @@
 
   <!-- your app's js -->
   <script src="js/app.js"></script>
+  <script src="lib/collide/collide.js"></script>
   <script src="js/ionic.swipecards.js"></script>
 </head>
 
-<body ng-app="starter" no-scroll class="platform-ios platform-cordova platform-webview">
+<body ng-app="starter" no-scroll="" class="platform-ios platform-cordova platform-webview">
   <ion-nav-view view-title="mainView">
     
   </ion-nav-view>
