@@ -172,10 +172,13 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
   console.log($global.cardTypes);
   for(var cardType of $global.cardTypes) { // find content with cardId.
     if(cardType.cardId == $stateParams.cardId) {
-      console.log("cardContent", cardType.content);
       $scope.content = cardType.content;
       $scope.title = cardType.title;
     }
+  }
+
+  $scope.swipe = function(direction) {
+    window.history.go(-1);
   }
   
 })
