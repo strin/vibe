@@ -147,7 +147,7 @@ swipe-card.pop-in {
     top: 45%;
     left: 10px;
     color: #33cd5f;
-    font-size: 40px;
+    font-size: 100px;
     font-family: helvetica neue;
     font-weight:  bold;
     z-index: -1;
@@ -159,7 +159,7 @@ swipe-card.pop-in {
     top: 45%;
     right: 10px;
     color: #ef473a;
-    font-size: 40px;
+    font-size: 100px;
     font-family: helvetica neue;
     font-weight:  bold;
     z-index: -1;
