@@ -146,17 +146,23 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
   };
 
   $scope.addCard = function() {
-    var cardStackSize = 1; // pre-fetch three cards.
-    for(var cardi = 0; cardi < cardStackSize; cardi++) {
-      if($scope.cardIndex < $global.cardTypes.length) {  
-        var newCard = $global.cardTypes[$scope.cardIndex];    
-        $scope.cardIndex += 1;  
+    if($scope.cardIndex < $global.cardTypes.length) {  
+      var newCard = $global.cardTypes[$scope.cardIndex];    
+      $scope.cardIndex += 1;  
 
-        newCard.id = Math.random();
-        $scope.cards.push(angular.extend({}, newCard));
-        console.log('new card image', newCard.image);
+      newCard.id = Math.random();
+      $scope.cards.push(angular.extend({}, newCard));
+      console.log('new card image', newCard.image);
+
+      // preload next image in the stack.
+      if($scope.cardIndex < $global.cardTypes.length) {
+        var nextCard = $global.cardTypes[$scope.cardIndex];
+        var image = new Image();
+        image.src = nextCard.image;
       }
     }
+
+    
   }
 
 })
