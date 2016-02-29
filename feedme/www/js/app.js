@@ -6,7 +6,7 @@
 
 $global = {};
 
-angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
+angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards'])
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
@@ -140,6 +140,29 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
   $scope.cardSwiped = function(index) {
     $scope.addCard();
   };
+
+  $scope.cardSwipedLeft = function(index) {
+    // kick off the platform web client
+    Ionic.io();
+
+    // this will give you a fresh user or the previously saved 'current user'
+    var user = Ionic.User.current();
+
+    // if the user doesn't have an id, you'll need to give it one.
+    if (!user.id) {
+      user.id = Ionic.User.anonymousId();
+      // user.id = 'your-custom-user-id';
+    }
+
+    //persist the user
+    user.save();
+
+    console.log('user id');
+  }
+
+  $scope.cardSwipedRight = function(index) {
+
+  }
 
   $scope.cardDestroyed = function(index) {
     $scope.cards.splice(index, 1);
