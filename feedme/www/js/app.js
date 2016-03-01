@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 
 $global = {
-  // 'backend': 'http://54.149.190.97:8889',
+  'backend': 'http://54.149.190.97:8889',
   // 'backend': 'http://localhost:8889',
-  'backend': '/feed',
+  // 'backend': '/feed',
 };
 
 angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards'])
