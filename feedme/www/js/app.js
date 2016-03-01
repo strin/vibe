@@ -115,9 +115,10 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
   }];
 
   console.log('loading');
-  $http({
-    method: 'GET',
-    url: $global.backend
+  $http.get($global.backend + '/vibes', {
+    params: {
+      userid: getUserId(Ionic)
+    }
   }).then(function successCallback(response) {
       var feeds = response.data.feed;
       feeds.reverse(); // in reverse time order.

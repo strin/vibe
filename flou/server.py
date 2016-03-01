@@ -28,12 +28,20 @@ class FeedHandler(web.RequestHandler):
         return all feeds in the database that have images.
         '''
         print '[feed] get feed content'
+        userid = self.get_argument('userid')
+        print '[feed] userid', userid
+        user_links = user_db.get_links_by_user(userid)
+        user_links = set(user_links)
+        print '[feed] user_links', user_links
+
         self.set_header("Access-Control-Allow-Origin", "http://localhost:8889")
         entries = db.get_all_entries()
         feeds = []
         for entry in entries:
             feed = dict(entry)
-            feeds.append(feed)
+            link = feed.get('link')
+            if link and link not in user_links: # user hasn't read this yet.
+                feeds.append(feed)
 
         self.write({
             'feed': feeds
@@ -60,8 +68,8 @@ handlers = [
     (r"/(.*\.png)", web.StaticFileHandler, {"path": "frontend/"}),
     (r"/(.*\.css)", web.StaticFileHandler, {"path": "frontend/css/"}),
     (r"/(.*\.js)", web.StaticFileHandler, {"path": "frontend/js/"}),
-    (r"/", FeedHandler),
-    (r"/swipe", SwipeHandler),
+    (r"/vibes/?", FeedHandler),
+    (r"/swipe/?", SwipeHandler),
 ]
 
 settings = {

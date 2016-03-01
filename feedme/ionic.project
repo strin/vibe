@@ -3,8 +3,8 @@
   "app_id": "c1dc9bc1",
   "proxies": [
     {
-      "path": "/feed",
-      "proxyUrl": "http://localhost:8889"
+      "path": "/feed/vibes",
+      "proxyUrl": "http://localhost:8889/vibes"
     },
     {
       "path": "/feed/swipe",
