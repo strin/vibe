@@ -34,7 +34,7 @@ class FeedHandler(web.RequestHandler):
         user_links = set(user_links)
         print '[feed] user_links', user_links
 
-        self.set_header("Access-Control-Allow-Origin", "http://localhost:8889")
+        self.set_header("Access-Control-Allow-Origin", "http://localhost:8100")
         entries = db.get_all_entries()
         feeds = []
         for entry in entries:
