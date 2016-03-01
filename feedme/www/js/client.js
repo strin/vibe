@@ -13,4 +13,6 @@ function getUserId(Ionic) {
 
 	//persist the user
 	user.save();
+
+	return user.id;
 }

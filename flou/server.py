@@ -3,8 +3,11 @@ from tornado import (ioloop, web)
 import flou.channel.db as db
 import flou.channel.rss as rss
 
+import flou.user.db as user_db
+
 from multiprocessing import Process
 import time
+import json
 
 
 def fetch_process_method():
@@ -24,6 +27,7 @@ class FeedHandler(web.RequestHandler):
         '''
         return all feeds in the database that have images.
         '''
+        print '[feed] get feed content'
         self.set_header("Access-Control-Allow-Origin", "http://localhost:8889")
         entries = db.get_all_entries()
         feeds = []
@@ -36,6 +40,20 @@ class FeedHandler(web.RequestHandler):
         })
 
 
+class SwipeHandler(web.RequestHandler):
+    def post(self):
+        data = json.loads(self.request.body)
+        userid = data.get('userid')
+        link = data.get('link')
+        action = data.get('action')
+        print 'link', link
+        user_db.add_entry(userid, link, action)
+        self.write({
+            'status': 'OK'
+        })
+
+
+
 handlers = [
     # try
     (r"/(.*\.jpg)", web.StaticFileHandler, {"path": "frontend/"}),
@@ -43,6 +61,7 @@ handlers = [
     (r"/(.*\.css)", web.StaticFileHandler, {"path": "frontend/css/"}),
     (r"/(.*\.js)", web.StaticFileHandler, {"path": "frontend/js/"}),
     (r"/", FeedHandler),
+    (r"/swipe", SwipeHandler),
 ]
 
 settings = {

@@ -1,12 +1,10 @@
-from flou.utils import mkdir_if_not_exists
 import sqlite3 as sql
 import base64
 import json
 
-DB_FILE_NAME = 'flou/db/feed.db'
-DB_PATH_NAME = DB_FILE_NAME[:DB_FILE_NAME.rfind('/')]
+from flou.utils import mkdir_if_not_exists
+from flou.db.common import DB_FILE_NAME, DB_PATH_NAME
 
-mkdir_if_not_exists(DB_PATH_NAME)
 
 class DBConn(object):
     def __enter__(self):

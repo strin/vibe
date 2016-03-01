@@ -4,7 +4,11 @@
   "proxies": [
     {
       "path": "/feed",
-      "proxyUrl": "http://54.149.190.97:8889/"
+      "proxyUrl": "http://localhost:8889"
+    },
+    {
+      "path": "/feed/swipe",
+      "proxyUrl": "http://localhost:8889/swipe"
     }
   ]
 }

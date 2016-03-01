@@ -193,7 +193,7 @@
       }
 
       if(this.x < 0) {
-        this.onSwipeLeft && this.onSwipeLeft();
+        this.onCardSwipeLeft && this.onCardSwipeLeft();
         // turn on the icon.
         this.rightText.style["-webkit-transition"] = "all 0.3s ease";
         targetSize = 300;
@@ -205,7 +205,7 @@
         this.rightText.style["z-index"] = "100";
         this.rightText.style["opacity"] = "0.2";
       }else{
-        this.onSwipeRight && this.onSwipeRight();
+        this.onCardSwipeRight && this.onCardSwipeRight();
         // turn on the icon.
         this.leftText.style["-webkit-transition"] = "all 0.3s ease";
         targetSize = 300;
@@ -349,8 +349,8 @@
       transclude: true,
       scope: {
         onCardSwipe: '&',
-        onSwipeLeft: '&',
-        onSwipeRight: '&',
+        onCardSwipeLeft: '&',
+        onCardSwipeRight: '&',
         onPartialSwipe: '&',
         onDestroy: '&'
       },
@@ -388,16 +388,16 @@
               $scope.onDestroy();
             });
           },
-          onSwipeRight: function() {
+          onCardSwipeRight: function() {
             console.log("swipe right!");
             $timeout(function() {
-              $scope.onSwipeRight();
+              $scope.onCardSwipeRight();
             });
           },
-          onSwipeLeft: function() {
+          onCardSwipeLeft: function() {
             console.log("swipe left!");
             $timeout(function() {
-              $scope.onSwipeLeft();
+              $scope.onCardSwipeLeft();
             });
           },
           onSnapBack: function(startX, startY, startRotation) {

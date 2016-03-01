@@ -35,9 +35,9 @@ def fetch(url):
                 else:
                     image = ''
                 html = main_object.get('html')
-                print 'title', title
-                print 'url', url
-                print 'image', image
+                #print 'title', title
+                #print 'url', url
+                #print 'image', image
                 db.add_entry(link, title, image, html)
             except Exception as e:
                 print '[error] extract link failed', link, e.message
