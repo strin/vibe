@@ -25,5 +25,14 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "es.keensoft.fullscreenimage": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/keensoft/FullScreenImage-Cordova-Plugin.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

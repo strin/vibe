@@ -5,19 +5,37 @@
 
   <swipe-cards>
     <div class="ion-heart-broken no-text" data-pack="default" data-tags="love"></div>
-    <swipe-card ng-repeat="card in cards" on-destroy="cardDestroyed(cardIndex)" on-card-swipe="cardSwiped(cardIndex)" on-card-swipe-left="cardSwipedLeft(cardIndex)" on-card-swipe-right="cardSwipedRight(cardIndex)">
+    <swipe-card ng-repeat="card in cards" on-destroy="cardDestroyed(cardIndex)" on-card-swipe="cardSwiped(cardIndex)" on-card-swipe-left="cardSwipedLeft(cardIndex)" on-card-swipe-right="cardSwipedRight(cardIndex)" id="cardCtrl">
       <div ng-controller="CardCtrl" class="swipe-ctrl"> <!--ui-sref="content({cardId: {{card.cardId}}})">
-        <h3 class="title">
-          <b>{{card.title}}</b>
-        </h3>
         <!--window.location.href='#/content/{{card.cardId}}'-->
-        <div class="image">
+        <div class="image" ng-if="card.type=='image'">
           <!--TODO: right now, we prefetch all images to improve load time.-->
           <!--TODO: probably need a smarter way to do this. i.e. do not prefetch all. -->
           <!-- <link rel="prefetch" ng-href="{{card.image}}" style="display: hidden;">  -->
-          <img ng-src="{{card.image}}" pan>
+          <img ng-src="{{card.url}}" pan>
+        </div>
+
+        <div class="image" ng-if="card.type=='album'">
+          <!--TODO: right now, we prefetch all images to improve load time.-->
+          <!--TODO: probably need a smarter way to do this. i.e. do not prefetch all. -->
+          <!-- <link rel="prefetch" ng-href="{{card.image}}" style="display: hidden;">  -->
+          <img ng-src="{{card.cover}}" pan>
+        </div>
+
+        <div class="image" ng-if="card.type=='video'" style="height: 100%;">
+          video
+          <video id="cardVideo" width="320" height="240" autoplay loop controls pan>
+            <source ng-src="{{card.data}}" type="video/mp4" >
+            Your phone browser does not support the video.
+          </video> 
+          
+          
         </div>
       </div>
+
+      <h3 class="title">
+        <b>{{card.title}}</b>
+      </h3>
     </swipe-card>
     <div class="ion-heart yes-text" data-pack="default" data-tags="love"></div>
   </swipe-cards>

@@ -23,6 +23,10 @@
                         {
                             "xml": "<feature name=\"InAppBrowser\"><param name=\"ios-package\" value=\"CDVInAppBrowser\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"FullScreenImage\"><param name=\"ios-package\" value=\"FullScreenImage\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -50,6 +54,9 @@
             "PACKAGE_NAME": "com.ionicframework.tmp"
         },
         "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.ionicframework.tmp"
+        },
+        "es.keensoft.fullscreenimage": {
             "PACKAGE_NAME": "com.ionicframework.tmp"
         }
     },

@@ -68,34 +68,32 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
 .directive('pan', function(){ 
    return {
      restrict: 'A',
-     link: function(scope, elem, attr) {
-         elem.on('load', function() {
-            var w = elem.width,
-                h = elem.height;
+     link: function($scope, $elem, $attr) {
+        var setTop = function () {
+          var div = $elem.parent();
+          var h = $elem[0].height;
+          var top = window.innerHeight / 2 - h / 2;
+          var card = document.getElementById('cardCtrl');
+          card.style['height'] = h + 'px';
+          card.style['top'] = top + 'px';
+        }
 
-            var div = elem.parent();
-            var translateDistance = (elem[0].width - window.innerWidth);
-            div[0].style.right = '-' + translateDistance +'px'; // initial card position.
-            
-
-            setTimeout(function() {
-              // div[0].classList.add('move');
-              div[0].style['-webkit-transform'] = 'translate3d(-' + translateDistance + 'px,0, 0)';
-              div[0].style['transform'] = 'translate3d(-' + translateDistance + 'px,0, 0)';
-              div[0].style['-o-transform'] = 'translate3d(-' + translateDistance + 'px,0, 0)';
-              div[0].style['-ms-transform'] = 'translate3d(-' + translateDistance + 'px,0, 0)';
-              div[0].style['transition'] = '10s';
-              div[0].style['-webkit-transition'] = '10s';
-              div[0].style['-moz-transition'] = '10s';
-            }, 1000);
+        setTop();
+        
+         $elem[0].addEventListener('loadstart', function() {
+          setTop();
          });
+         $elem.on('load', function() {
+          setTop();
+         });
+
      }
    };
 })
 
 
 
-.controller('CardsCtrl', function($scope, $state, $http, $ionicSwipeCardDelegate) {
+.controller('CardsCtrl', function($scope, $state, $http, $ionicSwipeCardDelegate, $sce) {
 
   $global.cardData = [{
     title: 'Swipe down to clear the card',
@@ -124,15 +122,23 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
       feeds.reverse(); // in reverse time order.
       $global.cardData = [];
       cardId = 0;
+
       for(var feed of feeds) {
-        if(feed.image.length == 0) continue;
-        $global.cardData.push({
-          'title': feed.title,
-          'image': feed.image,
-          'content': feed.content,
-          'url': feed.link,
-          'cardId': cardId
-        })
+
+        if(feed.type == 'video') {
+          feed.data = $sce.trustAsResourceUrl(feed.data);
+        }else if(feed.type == 'album') {
+          feed.data = JSON.parse(feed.data);
+          for(var pic in feed.data) {
+            pic.url = $sce.trustAsResourceUrl(pic.url);
+          }
+          feed.cover = feed.data[0].url;
+        }
+
+        feed.cardId = cardId;
+        feed.url = feed.link;
+
+        $global.cardData.push(feed);
         cardId += 1;
       }
       $scope.addCard();
@@ -191,8 +197,9 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
       var newCard = $global.cardData[$scope.cardIndex];    
       
       newCard.id = Math.random();
+      console.log('new card', newCard.type);
+      console.log('new card', newCard.cover);
       $scope.cards.push(angular.extend({}, newCard));
-      console.log('new card image', newCard.image);
 
       // preload next image in the stack.
       if($scope.cardIndex + 1 < $global.cardData.length) {

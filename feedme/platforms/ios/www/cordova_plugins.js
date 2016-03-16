@@ -35,6 +35,13 @@ module.exports = [
             "cordova.InAppBrowser.open",
             "window.open"
         ]
+    },
+    {
+        "file": "plugins/es.keensoft.fullscreenimage/www/fullscreenimage.js",
+        "id": "es.keensoft.fullscreenimage.FullScreenImage",
+        "clobbers": [
+            "window.FullScreenImage"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -43,7 +50,8 @@ module.exports.metadata =
     "com.ionic.keyboard": "1.0.3",
     "org.apache.cordova.console": "0.2.11",
     "org.apache.cordova.device": "0.2.12",
-    "cordova-plugin-inappbrowser": "1.3.1-dev"
+    "cordova-plugin-inappbrowser": "1.3.1-dev",
+    "es.keensoft.fullscreenimage": "1.0.1"
 }
 // BOTTOM OF METADATA
 });
