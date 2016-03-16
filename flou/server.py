@@ -13,10 +13,11 @@ import json
 
 def fetch_process_method():
     while True:
+        max_count = 30
         # fetch hacker news.
         url = 'http://hnrss.org/newest'
-        rss.fetch(url)
-        imgur.fetch()
+        rss.fetch(url, max_count=max_count)
+        imgur.fetch(max_count=max_count)
         time.sleep(3600)
 
 

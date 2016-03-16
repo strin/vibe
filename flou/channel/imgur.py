@@ -10,10 +10,12 @@ CLIENT_SECRET = 'a4e40ee2d5383632c96aa62d672b06f39a8011ce'
 
 client = ImgurClient(CLIENT_ID, CLIENT_SECRET)
 
-def fetch():
+def fetch(max_count=30):
     items = client.gallery(section='hot', sort='viral', page=0, window='day', show_viral=True)
     if items:
-        for item in items:
+        for (count, item) in enumerate(items):
+            if count >= max_count:
+                break
             try:
                 link = item.link
                 title = item.title
@@ -32,7 +34,6 @@ def fetch():
                             'views': image.get('views'),
                             'vote': image.get('vote'),
                         })
-                        print images
                     db.add_entry(link, title, kind='album', data=json.dumps(images))
                 elif item.animated:
                     image = item.link

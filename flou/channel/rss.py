@@ -7,11 +7,13 @@ import flou.channel.db as db
 from flou.utils import colorize
 from flou.sanity.readability import extract_reader_html
 
-def fetch(url):
+def fetch(url, max_count=30):
     data = feedparser.parse(url)
     entries = data.get('entries')
     if entries:
-        for entry in entries:
+        for (count, entry) in enumerate(entries):
+            if count >= max_count:
+                break
             try:
                 link = entry.get('link') # fetch link only.
                 # use diffbot only to extract contact.
