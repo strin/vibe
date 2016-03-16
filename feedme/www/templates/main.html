@@ -24,7 +24,7 @@
 
         <div class="image" ng-if="card.type=='video'" style="height: 100%;">
           video
-          <video id="cardVideo" width="320" height="240" loop controls webkit-playsinline pan>
+          <video id="cardVideo" loop autoplay webkit-playsinline pan>
             <source ng-src="{{card.data}}" type="video/mp4" >
             Your phone browser does not support the video.
           </video> 

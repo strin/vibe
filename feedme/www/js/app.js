@@ -69,23 +69,50 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
    return {
      restrict: 'A',
      link: function($scope, $elem, $attr) {
-        var setTop = function () {
-          var div = $elem.parent();
-          var h = $elem[0].height;
-          var top = window.innerHeight / 2 - h / 2;
-          var card = document.getElementById('cardCtrl');
-          card.style['height'] = h + 'px';
-          card.style['top'] = top + 'px';
+      var setStyle = function () {
+        // basic parameters.
+        var windowHeight = window.innerHeight, 
+          windowWidth = window.innerWidth;
+
+        // get content meta data.
+        if($scope.card.type == 'video') { // video.
+          var h = $elem[0].videoHeight;
+          var w = $elem[0].videoWidth;
+        }else{ // album or images.
+          var h = $elem[0].naturalHeight;
+          var w = $elem[0].naturalWidth;
         }
+        var ratio = w / h;
 
-        setTop();
+        // if it's a vertical card, then scale to fit screen width.
+        // if it's a horizontal card, then scale ti fit 75% screen height.
+        if(ratio < 1) {
+          var contentWidth = windowWidth;
+          var contentLeft = 0;
+          var cardHeight = windowWidth / ratio;
+          var cardTop = -(cardHeight - windowHeight) / 2;
+        }else{
+          var cardHeight = 0.75 * windowHeight;
+          var cardTop = windowHeight / 2 - cardHeight / 2;
+          var contentWidth = cardHeight * ratio;
+          var contentLeft = -(contentWidth - windowWidth) / 2;
+        }
+        var div = $elem.parent();
+        var card = document.getElementById('cardCtrl');
 
-         $elem[0].addEventListener('loadstart', function() {
-          setTop();
-         });
-         $elem.on('load', function() {
-          setTop();
-         });
+        div[0].style['width'] = contentWidth + 'px';
+        div[0].style['left'] = contentLeft + 'px';  
+        card.style['width'] = windowWidth + 'px';
+        card.style['height'] = cardHeight + 'px';
+        card.style['top'] = cardTop + 'px';  
+      }
+
+      $elem[0].addEventListener('loadedmetadata', function() {
+       setStyle();
+      });
+      $elem.on('load', function() {
+       setStyle();
+      });
 
      }
    };
@@ -155,7 +182,22 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
   };
 
   $scope.showImage = function(card) {
-    window.FullScreenImage.showImageURL(card.url);
+    if(card.type == 'album') {
+
+    }else if(card.type == 'video') {
+      var elem = document.getElementById("cardVideo");
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      }
+    }else if(card.type == 'image') {
+
+    }
   }
 
   $scope.cardSwipedLeft = function(index) {

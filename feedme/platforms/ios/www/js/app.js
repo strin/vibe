@@ -155,7 +155,19 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
   };
 
   $scope.showImage = function(card) {
-    window.FullScreenImage.showImageURL(card.url);
+
+    var img = new Image();
+      img.crossOrigin = 'Anonymous';
+      img.onload = function(){
+          var canvas = document.createElement('CANVAS');
+          var ctx = canvas.getContext('2d');
+          canvas.height = this.height;
+          canvas.width = this.width;
+          ctx.drawImage(this,0,0);
+          var dataURL = canvas.toDataURL(outputFormat || 'image/png');
+          // window.FullScreenImage.showImageURL(card.url);
+          canvas = null; 
+    };   
   }
 
   $scope.cardSwipedLeft = function(index) {
@@ -209,7 +221,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
       if($scope.cardIndex + 1 < $global.cardData.length) {
         var nextCard = $global.cardData[$scope.cardIndex + 1];
         var image = new Image();
-        image.src = nextCard.image;
+        image.src = nextCard.url;
       }
     }
   }
