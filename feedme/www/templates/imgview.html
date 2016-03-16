@@ -1,0 +1,15 @@
+<div id="image-modal" class="modal image-modal transparent" on-swipe-down="closeModal()" >
+  
+      <ion-scroll direction="xy" scrollbar-x="false" scrollbar-y="false"
+      zooming="true" min-zoom="1.0" style="width: 100%; height: 100%"
+      delegate-handle="scrollHandle{{$index}}" on-scroll="updateSlideStatus(activeSlide)" on-release="updateSlideStatus(activeSlide)">
+ 
+      <div id="" class="image-modal-content" style="background-image: url({{card.url}})"></div>
+      
+    </ion-scroll>
+ 	<script>
+ 		setTimeout(function() {
+ 			document.getElementById('image-modal').className += 'half-transparent';
+ 		}, 1000);
+ 	</script>
+</div>

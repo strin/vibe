@@ -120,7 +120,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
 
 
 
-.controller('CardsCtrl', function($scope, $state, $http, $ionicSwipeCardDelegate, $sce) {
+.controller('CardsCtrl', function($scope, $state, $http, $ionicSwipeCardDelegate, $sce, $ionicModal) {
 
   $global.cardData = [{
     title: 'Swipe down to clear the card',
@@ -181,6 +181,21 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
 
   };
 
+  $scope.showModal = function(templateUrl, card) {
+    $ionicModal.fromTemplateUrl(templateUrl, {
+      scope: $scope,
+    }).then(function(modal) {
+      $scope.modal = modal;
+      $scope.card = card;
+      $scope.modal.show();
+    });
+  }
+   
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+    $scope.modal.remove()
+  };
+
   $scope.showImage = function(card) {
     if(card.type == 'album') {
 
@@ -196,7 +211,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
         elem.webkitRequestFullscreen();
       }
     }else if(card.type == 'image') {
-
+      $scope.showModal('templates/imgview.html', card);
     }
   }
 
