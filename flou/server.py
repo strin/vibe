@@ -21,7 +21,7 @@ def fetch_process_method():
         '''
 
         imgur.fetch()
-        time.sleep(3)
+        time.sleep(3600)
 
 
 fetch_process = Process(target=fetch_process_method)
