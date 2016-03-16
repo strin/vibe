@@ -161,6 +161,11 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
           }
 
           feed.cover = feed.data[0].url;
+        }else if(feed.type == 'article') {
+          feed.data = JSON.parse(feed.data);
+          if(feed.data.cover == null) { // hide cards without cover.
+            continue;
+          }
         }
 
         feed.cardId = cardId;
@@ -169,6 +174,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
         $global.cardData.push(feed);
         cardId += 1;
       }
+
       $scope.addCard();
   }, function errorCallback(response) {
     // called asynchronously if an error occurs
@@ -213,6 +219,10 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
       }
     }else if(card.type == 'image') {
       $scope.showModal('templates/imgview.html', card);
+    }else if(card.type == 'article') {
+      $state.go('content', 
+        {cardId: card.cardId}
+      );
     }
   }
 
@@ -285,13 +295,16 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
   console.log($global.cardData);
   for(var cardType of $global.cardData) { // find content with cardId.
     if(cardType.cardId == $stateParams.cardId) {
-      $http.get($scope.url).then(function successCallback(response) {
-        $scope.content = reponse.data;
-        $scope.title = cardType.title;    
-      }, function errorCallback(response) {
-        // called asynchronously if an error occurs
-        // or server returns response with an error status.
-      });
+      // $http.get(cardType.url).then(function successCallback(response) {
+      //   $scope.content = reponse.data;
+      //   $scope.title = cardType.title;    
+      // }, function errorCallback(response) {
+      //   // called asynchronously if an error occurs
+      //   // or server returns response with an error status.
+      // });
+
+      $scope.content = cardType.data.content;
+      $scope.title = cardType.title;
       
     }
   }

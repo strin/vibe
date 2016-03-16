@@ -8,6 +8,13 @@
     <swipe-card ng-repeat="card in cards" on-destroy="cardDestroyed(cardIndex)" on-card-swipe="cardSwiped(cardIndex)" on-card-swipe-left="cardSwipedLeft(cardIndex)" on-card-swipe-right="cardSwipedRight(cardIndex)" id="cardCtrl">
       <div ng-controller="CardCtrl" class="swipe-ctrl" ng-click="showImage(card);"> <!--ui-sref="content({cardId: {{card.cardId}}})">
         <!--window.location.href='#/content/{{card.cardId}}'-->
+        <div class="image" ng-if="card.type=='article'">
+          <!--TODO: right now, we prefetch all images to improve load time.-->
+          <!--TODO: probably need a smarter way to do this. i.e. do not prefetch all. -->
+          <!-- <link rel="prefetch" ng-href="{{card.image}}" style="display: hidden;">  -->
+          <img ng-src="{{card.data.cover}}" pan>
+        </div>
+
         <div class="image" ng-if="card.type=='image'">
           <!--TODO: right now, we prefetch all images to improve load time.-->
           <!--TODO: probably need a smarter way to do this. i.e. do not prefetch all. -->
