@@ -209,7 +209,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
       if($scope.cardIndex + 1 < $global.cardData.length) {
         var nextCard = $global.cardData[$scope.cardIndex + 1];
         var image = new Image();
-        image.src = nextCard.image;
+        image.src = nextCard.url;
       }
     }
   }

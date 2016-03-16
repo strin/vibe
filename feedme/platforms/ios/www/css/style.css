@@ -89,13 +89,26 @@ swipe-card .image {
   position: absolute;
   vertical-align: middle;
   height: 100%;
+  width: 100%;
   overflow: hidden;
 }
 
 swipe-card .image img {
-  width: auto;
-  height: 100%;
+  width: 100%;
+  height: auto;
   border-radius: 0px 0px 0px 0px;
+  left: 0px;
+  position: absolute;
+}
+
+swipe-card .image video {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  top: auto;
+  bottom: auto;
+  border-radius: 5px 5px 5px 5px;
+  border-color: white;
   left: 0px;
 }
 
