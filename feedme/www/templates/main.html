@@ -6,7 +6,7 @@
   <swipe-cards>
     <div class="ion-heart-broken no-text" data-pack="default" data-tags="love"></div>
     <swipe-card ng-repeat="card in cards" on-destroy="cardDestroyed(cardIndex)" on-card-swipe="cardSwiped(cardIndex)" on-card-swipe-left="cardSwipedLeft(cardIndex)" on-card-swipe-right="cardSwipedRight(cardIndex)">
-      <div ng-controller="CardCtrl" class="swipe-ctrl" ui-sref="content({cardId: {{card.cardId}}})">
+      <div ng-controller="CardCtrl" class="swipe-ctrl"> <!--ui-sref="content({cardId: {{card.cardId}}})">
         <h3 class="title">
           <b>{{card.title}}</b>
         </h3>
