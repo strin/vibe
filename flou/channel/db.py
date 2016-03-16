@@ -5,7 +5,6 @@ import json
 from flou.utils import mkdir_if_not_exists
 from flou.db.common import DB_FILE_NAME, DB_PATH_NAME
 
-
 class DBConn(object):
     def __enter__(self):
         conn = sql.connect(DB_FILE_NAME)

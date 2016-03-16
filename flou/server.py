@@ -2,6 +2,7 @@ from tornado import (ioloop, web)
 
 import flou.channel.db as db
 import flou.channel.rss as rss
+import flou.channel.imgur as imgur
 
 import flou.user.db as user_db
 
@@ -12,10 +13,15 @@ import json
 
 def fetch_process_method():
     while True:
+        # fetch hacker news.
+        '''
         url = 'http://hnrss.org/newest'
         print '[fetch]', url
         rss.fetch(url)
-        time.sleep(3600)
+        '''
+
+        imgur.fetch()
+        time.sleep(3)
 
 
 fetch_process = Process(target=fetch_process_method)
