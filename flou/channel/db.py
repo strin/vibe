@@ -10,11 +10,16 @@ class DBConn(object):
         conn = sql.connect(DB_FILE_NAME)
         conn.row_factory = sql.Row
         # create the file metadata table.
+        # type: image, video, album, ...
+        # data:
+        #   image: url
+        #   mp4:   url
+        #   album: list of json objects.
         conn.execute("""CREATE TABLE IF NOT EXISTS feed
                     (title text,
                     link text,
-                    image text,
-                    content text)
+                    type text,
+                    data text)
                     """)
         conn.commit()
         self.conn = conn
@@ -51,7 +56,7 @@ def get_all_entries():
     return None
 
 
-def add_entry(link, title, image, content):
+def add_entry(link, title, kind, data):
     '''
     >>> add_entry('https://github.com/samyk/magspoof', 'MagsProof', 'MagSpoof - credit card/magstripe spoofer')
     '''
@@ -64,18 +69,18 @@ def add_entry(link, title, image, content):
                     INSERT INTO feed
                         (title,
                         link,
-                        image,
-                        content)
+                        type,
+                        data)
                     VALUES
                        (:title,
                        :link,
-                       :image,
-                       :content)
+                       :type,
+                       :data)
                     """,
                     dict(title=title,
                          link=link,
-                         image=image,
-                         content=content)
+                         type=kind,
+                         data=data)
                     )
 
 if __name__ == '__main__':
