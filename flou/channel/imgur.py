@@ -26,7 +26,13 @@ def fetch():
                             'url': image['link'],
                             'width': image['width'],
                             'height': image['height'],
+                            'description': image.get('description'),
+                            'title': image.get('title'),
+                            'datetime': image.get('datetime'),
+                            'views': image.get('views'),
+                            'vote': image.get('vote'),
                         })
+                        print images
                     db.add_entry(link, title, kind='album', data=json.dumps(images))
                 elif item.animated:
                     image = item.link
