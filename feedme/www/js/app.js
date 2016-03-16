@@ -69,6 +69,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
    return {
      restrict: 'A',
      link: function($scope, $elem, $attr) {
+
       var setStyle = function () {
         // basic parameters.
         var windowHeight = window.innerHeight, 
@@ -82,7 +83,10 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
           var h = $elem[0].naturalHeight;
           var w = $elem[0].naturalWidth;
         }
+
         var ratio = w / h;
+
+
 
         // if it's a vertical card, then scale to fit screen width.
         // if it's a horizontal card, then scale ti fit 75% screen height.
@@ -107,13 +111,16 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
         card.style['top'] = cardTop + 'px';  
       }
 
+      $elem.on('error', function() {
+        $scope.cardSwipedLeft($scope.cardIndex);
+      });
+
       $elem[0].addEventListener('loadedmetadata', function() {
        setStyle();
       });
       $elem.on('load', function() {
        setStyle();
       });
-
      }
    };
 })
@@ -184,6 +191,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
   $scope.cards = Array.prototype.slice.call($global.cardData, 0, 0);
   $scope.cardIndex = -1;
 
+
   $scope.cardSwiped = function(index) {
 
   };
@@ -226,6 +234,10 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
     }
   }
 
+  $scope.removeCard = function() {
+    $scope.cards.splice(0, 1);
+  }
+
   $scope.cardSwipedLeft = function(index) {
     var url = $global.cardData[index].url;
     var userid = getUserId(Ionic);
@@ -239,7 +251,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
     });
 
     $scope.addCard();
-    $scope.cards.splice(0, 1);
+    $scope.removeCard();
   }
 
   $scope.cardSwipedRight = function(index) {
@@ -279,6 +291,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
         var image = new Image();
         image.src = nextCard.url;
       }
+
     }
   }
 

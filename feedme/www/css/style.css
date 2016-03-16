@@ -47,11 +47,11 @@ swipe-card {
 }
 
 swipe-card .swipe-card{
-  height: 0px;
+  height: 50px;
 }
 
 swipe-card .swipe-ctrl {
-  height: 0px;
+  height: 50px;
 }
 
 swipe-card .title {
