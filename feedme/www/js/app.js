@@ -79,7 +79,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
         }
 
         setTop();
-        
+
          $elem[0].addEventListener('loadstart', function() {
           setTop();
          });
@@ -153,6 +153,10 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
   $scope.cardSwiped = function(index) {
 
   };
+
+  $scope.showImage = function(card) {
+    window.FullScreenImage.showImageURL(card.url);
+  }
 
   $scope.cardSwipedLeft = function(index) {
     var url = $global.cardData[index].url;
