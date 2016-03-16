@@ -156,9 +156,10 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
           feed.data = $sce.trustAsResourceUrl(feed.data);
         }else if(feed.type == 'album') {
           feed.data = JSON.parse(feed.data);
-          for(var pic in feed.data) {
+          for(var pic of feed.data) {
             pic.url = $sce.trustAsResourceUrl(pic.url);
           }
+
           feed.cover = feed.data[0].url;
         }
 
@@ -198,7 +199,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
 
   $scope.showImage = function(card) {
     if(card.type == 'album') {
-
+      $scope.showModal('templates/albumview.html', card);
     }else if(card.type == 'video') {
       var elem = document.getElementById("cardVideo");
       if (elem.requestFullscreen) {
