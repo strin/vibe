@@ -4,9 +4,13 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 
-$global = {};
+$global = {
+  'backend': 'http://54.149.190.97:8889',
+  // 'backend': 'http://localhost:8889',
+  // 'backend': '/feed',
+};
 
-angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
+angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards'])
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
@@ -93,7 +97,7 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
 
 .controller('CardsCtrl', function($scope, $state, $http, $ionicSwipeCardDelegate) {
 
-  $global.cardTypes = [{
+  $global.cardData = [{
     title: 'Swipe down to clear the card',
     image: 'img/pic.png'
   }, {
@@ -110,51 +114,91 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
     image: 'img/pic4.png'
   }];
 
-  $http({
-    method: 'GET',
-    url: 'http://54.149.190.97:8889/'
+  console.log('loading');
+  $http.get($global.backend + '/vibes', {
+    params: {
+      userid: getUserId(Ionic)
+    }
   }).then(function successCallback(response) {
       var feeds = response.data.feed;
       feeds.reverse(); // in reverse time order.
-      $global.cardTypes = [];
+      $global.cardData = [];
       cardId = 0;
       for(var feed of feeds) {
         if(feed.image.length == 0) continue;
-        $global.cardTypes.push({
+        $global.cardData.push({
           'title': feed.title,
           'image': feed.image,
           'content': feed.content,
+          'url': feed.link,
           'cardId': cardId
         })
         cardId += 1;
       }
-      $scope.cardSwiped();
+      $scope.addCard();
   }, function errorCallback(response) {
     // called asynchronously if an error occurs
     // or server returns response with an error status.
   });
 
-  $scope.cards = Array.prototype.slice.call($global.cardTypes, 0, 0);
-  $scope.cardIndex = 0;
+  $scope.cards = Array.prototype.slice.call($global.cardData, 0, 0);
+  $scope.cardIndex = -1;
 
   $scope.cardSwiped = function(index) {
-    $scope.addCard();
+
   };
 
+  $scope.cardSwipedLeft = function(index) {
+    var url = $global.cardData[index].url;
+    var userid = getUserId(Ionic);
+    $http.post($global.backend + '/swipe', {
+      'userid': getUserId(Ionic),
+      'link': url,
+      'action': 'like'
+    }).then(function successCallback(response) {
+    }, function failureCallback(response) {
+        console.error('swipe to like failed', response);
+    });
+
+    $scope.addCard();
+    $scope.cards.splice(0, 1);
+  }
+
+  $scope.cardSwipedRight = function(index) {
+    var url = $global.cardData[index].url;
+    var userid = getUserId(Ionic);
+    $http.post($global.backend + '/swipe', {
+      'userid': getUserId(Ionic),
+      'link': url,
+      'action': 'dislike'
+    }).then(function successCallback(response) {
+    }, function failureCallback(response) {
+        console.error('swipe to like failed', response);
+    });
+
+    $scope.addCard();
+    $scope.cards.splice(0, 1);
+  }
+
   $scope.cardDestroyed = function(index) {
-    $scope.cards.splice(index, 1);
+    
   };
 
   $scope.addCard = function() {
-    var cardStackSize = 1; // pre-fetch three cards.
-    for(var cardi = 0; cardi < cardStackSize; cardi++) {
-      if($scope.cardIndex < $global.cardTypes.length) {  
-        var newCard = $global.cardTypes[$scope.cardIndex];    
-        $scope.cardIndex += 1;  
+    if($scope.cardIndex + 1 < $global.cardData.length) {  
+      $scope.cardIndex += 1; 
 
-        newCard.id = Math.random();
-        $scope.cards.push(angular.extend({}, newCard));
-        console.log('new card image', newCard.image);
+      var newCard = $global.cardData[$scope.cardIndex];    
+      
+      newCard.id = Math.random();
+      $scope.cards.push(angular.extend({}, newCard));
+      console.log('new card image', newCard.image);
+
+      // preload next image in the stack.
+      if($scope.cardIndex + 1 < $global.cardData.length) {
+        var nextCard = $global.cardData[$scope.cardIndex + 1];
+        var image = new Image();
+        image.src = nextCard.image;
       }
     }
   }
@@ -169,13 +213,16 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.cards'])
 })
 
 .controller('ContentCtrl', function($scope, $stateParams) {
-  console.log($global.cardTypes);
-  for(var cardType of $global.cardTypes) { // find content with cardId.
+  console.log($global.cardData);
+  for(var cardType of $global.cardData) { // find content with cardId.
     if(cardType.cardId == $stateParams.cardId) {
-      console.log("cardContent", cardType.content);
       $scope.content = cardType.content;
       $scope.title = cardType.title;
     }
+  }
+
+  $scope.swipe = function(direction) {
+    window.history.go(-1);
   }
   
 })

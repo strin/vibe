@@ -212,12 +212,18 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
   };
 })
 
-.controller('ContentCtrl', function($scope, $stateParams) {
+.controller('ContentCtrl', function($scope, $stateParams, $http) {
   console.log($global.cardData);
   for(var cardType of $global.cardData) { // find content with cardId.
     if(cardType.cardId == $stateParams.cardId) {
-      $scope.content = cardType.content;
-      $scope.title = cardType.title;
+      $http.get($scope.url).then(function successCallback(response) {
+        $scope.content = reponse.data;
+        $scope.title = cardType.title;    
+      }, function errorCallback(response) {
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+      });
+      
     }
   }
 

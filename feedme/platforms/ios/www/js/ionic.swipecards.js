@@ -193,9 +193,29 @@
       }
 
       if(this.x < 0) {
-        this.onSwipeLeft && this.onSwipeLeft();
+        this.onCardSwipeLeft && this.onCardSwipeLeft();
+        // turn on the icon.
+        this.rightText.style["-webkit-transition"] = "all 0.3s ease";
+        targetSize = 300;
+        this.rightText.style["font-size"] = targetSize + "px";
+        this.rightText.style["right"] = (window.innerWidth / 2 
+                            - targetSize / 2) + "px";
+        this.rightText.style["top"] = (window.innerHeight / 2 
+                            - targetSize / 2) + "px";
+        this.rightText.style["z-index"] = "100";
+        this.rightText.style["opacity"] = "0.2";
       }else{
-        this.onSwipeRight && this.onSwipeRight();
+        this.onCardSwipeRight && this.onCardSwipeRight();
+        // turn on the icon.
+        this.leftText.style["-webkit-transition"] = "all 0.3s ease";
+        targetSize = 300;
+        this.leftText.style["font-size"] = targetSize + "px";
+        this.leftText.style["left"] = (window.innerWidth / 2 
+                            - targetSize / 2) + "px";
+        this.leftText.style["top"] = (window.innerHeight / 2 
+                            - targetSize / 2) + "px";
+        this.leftText.style["z-index"] = "100";
+        this.leftText.style["opacity"] = "0.2";
       }
       
       // Fly out
@@ -207,7 +227,23 @@
 
       // Trigger destroy after card has swiped out
       setTimeout(function() {
+        // reset yes-text style.
+        self.rightText.style["font-size"] = null;
+        self.rightText.style["opacity"] = null;
+        self.rightText.style["-webkit-transition"] = null;
+        self.rightText.style["right"] = null;
+        self.rightText.style["top"] = null;
+        self.rightText.style["z-index"] = null;
+
+        // reset no-text style.
+        self.leftText.style["font-size"] = null;
+        self.leftText.style["opacity"] = null;
+        self.leftText.style["-webkit-transition"] = null;
+        self.leftText.style["right"] = null;
+        self.leftText.style["top"] = null;
+        self.leftText.style["z-index"] = null;
         self.onDestroy && self.onDestroy();
+
       }, duration * 1000);
     },
 
@@ -313,8 +349,8 @@
       transclude: true,
       scope: {
         onCardSwipe: '&',
-        onSwipeLeft: '&',
-        onSwipeRight: '&',
+        onCardSwipeLeft: '&',
+        onCardSwipeRight: '&',
         onPartialSwipe: '&',
         onDestroy: '&'
       },
@@ -352,16 +388,16 @@
               $scope.onDestroy();
             });
           },
-          onSwipeRight: function() {
+          onCardSwipeRight: function() {
             console.log("swipe right!");
             $timeout(function() {
-              $scope.onSwipeRight();
+              $scope.onCardSwipeRight();
             });
           },
-          onSwipeLeft: function() {
+          onCardSwipeLeft: function() {
             console.log("swipe left!");
             $timeout(function() {
-              $scope.onSwipeLeft();
+              $scope.onCardSwipeLeft();
             });
           },
           onSnapBack: function(startX, startY, startRotation) {

@@ -18,12 +18,16 @@
   <!-- ionic/angularjs js -->
 
   <script src="lib/ionic/js/ionic.bundle.js"></script>
+<script src="lib/ionic-platform-web-client/dist/ionic.io.bundle.min.js"></script>
 
   <!-- cordova script (this will be a 404 during development) -->
-  <script src="cordova.js"></script>
+  <!-- Cordova is bootstrapped by ionic-platform-web-client, uncomment this if you remove ionic-platform-web-client... -->
+<!-- <script src="cordova.js"></script> -->
 
   <!-- your app's js -->
+  <script src="js/client.js"></script> <!--our vibe client for communication with server-->
   <script src="js/app.js"></script>
+
   <script src="lib/collide/collide.js"></script>
   <script src="js/ionic.swipecards.js"></script>
 </head>
