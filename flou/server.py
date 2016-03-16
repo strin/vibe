@@ -14,12 +14,8 @@ import json
 def fetch_process_method():
     while True:
         # fetch hacker news.
-        '''
         url = 'http://hnrss.org/newest'
-        print '[fetch]', url
         rss.fetch(url)
-        '''
-
         imgur.fetch()
         time.sleep(3600)
 

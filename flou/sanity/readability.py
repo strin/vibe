@@ -9,8 +9,12 @@ def extract_reader_html(url):
                             'url': url,
                             'token': 'bce960b8684303b648a519238bb7f6ff3c1d1ddc'
                         }))
-    content = json.load(response)['content']
-    content = content.replace('\n', '') # remove unnecessary newlines
-    return content
+    data = json.load(response)
+    data['content'] = data['content'].replace('\n', '') # remove unnecessary newlines
+    return {
+        'content': data.get('content'),
+        'title': data.get('title'),
+        'cover': data.get('lead_image_url')
+    }
 
 

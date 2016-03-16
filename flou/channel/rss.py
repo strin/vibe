@@ -4,6 +4,8 @@ import urllib
 import json
 
 import flou.channel.db as db
+from flou.utils import colorize
+from flou.sanity.readability import extract_reader_html
 
 def fetch(url):
     data = feedparser.parse(url)
@@ -13,32 +15,12 @@ def fetch(url):
             try:
                 link = entry.get('link') # fetch link only.
                 # use diffbot only to extract contact.
-                response = urllib2.urlopen('http://api.diffbot.com/v3/article?%s'
-                                    % urllib.urlencode({
-                                        'token': '0e14244dd75533a5211f1e6b3baf75de',
-                                        'url': link
-                                    }))
-                content = json.load(response)
-
-                main_object = content['objects'][0]
-                title = main_object.get("title")
-                images = main_object.get("images")
-                if images and len(images) > 0:
-                    # sort images based on resolution.
-                    try:
-                        images = sorted(images,
-                                        key=lambda image: image['width'] * image['height'],
-                                        reverse=True)
-                    except:
-                        pass
-                    image = images[0]['url']
-                else:
-                    image = ''
-                html = main_object.get('html')
-                #print 'title', title
-                #print 'url', url
-                #print 'image', image
-                db.add_entry(link, title, image, html)
+                data = extract_reader_html(link)
+                html = data.get('content')
+                title = data.get("title")
+                cover = data.get("cover")
+                db.add_entry(link, title, kind='article', data=json.dumps(data))
+                print colorize('[rss extracted] [source: %s] %s' % (url, link), 'green')
             except Exception as e:
                 print '[error] extract link failed', link, e.message
 
