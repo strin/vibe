@@ -21,6 +21,8 @@ def fetch(url, max_count=30):
                 html = data.get('content')
                 title = data.get("title")
                 cover = data.get("cover")
+                if not cover:
+                    continue
                 db.add_entry(link, title, kind='article', data=json.dumps(data))
                 print colorize('[rss extracted] [source: %s] %s' % (url, link), 'green')
             except Exception as e:
