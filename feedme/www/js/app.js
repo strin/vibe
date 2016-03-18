@@ -86,8 +86,6 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
 
         var ratio = w / h;
 
-
-
         // if it's a vertical card, then scale to fit screen width.
         // if it's a horizontal card, then scale ti fit 75% screen height.
         if(ratio < 1) {
@@ -124,9 +122,17 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
           div[0].style['-moz-transition'] = '10s';
         }, 1000);
 
+        console.log('[card] loaded');
+        // preload next image in the stack.
+        if($scope.cardIndex + 1 < $global.cardData.length) {
+          var nextCard = $global.cardData[$scope.cardIndex + 1];
+          var image = new Image();
+          image.src = nextCard.data.cover;
+        }
       }
 
       $elem.on('error', function() {
+        console.log('add card failed');
         $scope.cardSwipedLeft($scope.cardIndex);
       });
 
@@ -161,7 +167,6 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
     image: 'img/pic4.png'
   }];
 
-  console.log('loading');
   $http.get($global.backend + '/vibes', {
     params: {
       userid: getUserId(Ionic)
@@ -289,23 +294,15 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
   };
 
   $scope.addCard = function() {
+    console.log('[card] adding new card');
     if($scope.cardIndex + 1 < $global.cardData.length) {  
       $scope.cardIndex += 1; 
 
       var newCard = $global.cardData[$scope.cardIndex];    
       
       newCard.id = Math.random();
-      console.log('new card', newCard.type);
-      console.log('new card', newCard.cover);
+      
       $scope.cards.push(angular.extend({}, newCard));
-
-      // preload next image in the stack.
-      if($scope.cardIndex + 1 < $global.cardData.length) {
-        var nextCard = $global.cardData[$scope.cardIndex + 1];
-        var image = new Image();
-        image.src = nextCard.data.cover;
-        console.log('preload next image.src', image.src, nextCard);
-      }
 
     }
   }
@@ -320,7 +317,6 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
 })
 
 .controller('ContentCtrl', function($scope, $stateParams, $http) {
-  console.log($global.cardData);
   for(var cardType of $global.cardData) { // find content with cardId.
     if(cardType.cardId == $stateParams.cardId) {
       // $http.get(cardType.url).then(function successCallback(response) {
