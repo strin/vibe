@@ -5,7 +5,8 @@ import json
 
 import flou.channel.db as db
 from flou.utils import colorize
-from flou.sanity.readability import extract_reader_html
+# from flou.sanity.readability import extract_reader_html
+from flou.sanity.diffbot import extract_reader_html
 
 def fetch(url, max_count=30):
     data = feedparser.parse(url)

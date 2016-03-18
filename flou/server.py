@@ -38,6 +38,9 @@ class FeedHandler(web.RequestHandler):
         '''
         return all feeds in the database that have images.
         '''
+        whitelist = [
+            'content', 'title', 'cover'
+        ]
         print '[feed] get feed content'
         userid = self.get_argument('userid')
         print '[feed] userid', userid
@@ -50,6 +53,7 @@ class FeedHandler(web.RequestHandler):
         feeds = []
         for entry in entries:
             feed = dict(entry)
+            feed = {key: feed[key] for key in whitelist}
             link = feed.get('link')
             if link and link not in user_links: # user hasn't read this yet.
                 feeds.append(feed)
