@@ -105,10 +105,25 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
         var card = document.getElementById('cardCtrl');
 
         div[0].style['width'] = contentWidth + 'px';
-        div[0].style['left'] = contentLeft + 'px';  
+        // div[0].style['left'] = contentLeft + 'px';  
         card.style['width'] = windowWidth + 'px';
         card.style['height'] = cardHeight + 'px';
         card.style['top'] = cardTop + 'px';  
+
+        // translation effect.
+        var translateDistance = ($elem[0].width - windowWidth);
+        div[0].style['right'] = '-' + translateDistance +'px';
+
+        setTimeout(function() {
+          div[0].style['-webkit-transform'] = 'translate3d(-' + translateDistance + 'px,0, 0)';
+          div[0].style['transform'] = 'translate3d(-' + translateDistance + 'px,0, 0)';
+          div[0].style['-o-transform'] = 'translate3d(-' + translateDistance + 'px,0, 0)';
+          div[0].style['-ms-transform'] = 'translate3d(-' + translateDistance + 'px,0, 0)';
+          div[0].style['transition'] = '10s';
+          div[0].style['-webkit-transition'] = '10s';
+          div[0].style['-moz-transition'] = '10s';
+        }, 1000);
+
       }
 
       $elem.on('error', function() {
@@ -166,7 +181,6 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
           for(var pic of feed.data) {
             pic.url = $sce.trustAsResourceUrl(pic.url);
           }
-
           feed.cover = feed.data[0].url;
         }else if(feed.type == 'article') {
           feed.data = JSON.parse(feed.data);
@@ -289,7 +303,8 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
       if($scope.cardIndex + 1 < $global.cardData.length) {
         var nextCard = $global.cardData[$scope.cardIndex + 1];
         var image = new Image();
-        image.src = nextCard.url;
+        image.src = nextCard.data.cover;
+        console.log('preload next image.src', image.src, nextCard);
       }
 
     }
