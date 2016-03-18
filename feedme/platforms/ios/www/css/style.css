@@ -37,7 +37,7 @@ swipe-card {
   box-sizing: border-box;
   border-radius: 4px;
   overflow: hidden;
-  height: 100%;
+  height: 0px;
   -webkit-animation-fill-mode: forwards;
 
   -moz-box-shadow:0 0 20px 0 black;
@@ -47,11 +47,11 @@ swipe-card {
 }
 
 swipe-card .swipe-card{
-  height: 100%;
+  height: 50px;
 }
 
 swipe-card .swipe-ctrl {
-  height: 100%;
+  height: 50px;
 }
 
 swipe-card .title {
@@ -103,8 +103,8 @@ swipe-card .image img {
 
 swipe-card .image video {
   position: absolute;
-  width: 100%;
-  height: auto;
+  width: auto;
+  height: 100%;
   top: auto;
   bottom: auto;
   border-radius: 5px 5px 5px 5px;
@@ -188,4 +188,5 @@ swipe-card.pop-in {
   font-family: 'open sans', sans-serif;
   line-height: 1.5;
   font-size: 20px;
+  text-align: justify;
 }

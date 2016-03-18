@@ -69,31 +69,65 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
    return {
      restrict: 'A',
      link: function($scope, $elem, $attr) {
-        var setTop = function () {
-          var div = $elem.parent();
-          var h = $elem[0].height;
-          var top = window.innerHeight / 2 - h / 2;
-          var card = document.getElementById('cardCtrl');
-          card.style['height'] = h + 'px';
-          card.style['top'] = top + 'px';
+
+      var setStyle = function () {
+        // basic parameters.
+        var windowHeight = window.innerHeight, 
+          windowWidth = window.innerWidth;
+
+        // get content meta data.
+        if($scope.card.type == 'video') { // video.
+          var h = $elem[0].videoHeight;
+          var w = $elem[0].videoWidth;
+        }else{ // album or images.
+          var h = $elem[0].naturalHeight;
+          var w = $elem[0].naturalWidth;
         }
 
-        setTop();
+        var ratio = w / h;
 
-         $elem[0].addEventListener('loadstart', function() {
-          setTop();
-         });
-         $elem.on('load', function() {
-          setTop();
-         });
 
+
+        // if it's a vertical card, then scale to fit screen width.
+        // if it's a horizontal card, then scale ti fit 75% screen height.
+        if(ratio < 1) {
+          var contentWidth = windowWidth;
+          var contentLeft = 0;
+          var cardHeight = windowWidth / ratio;
+          var cardTop = -(cardHeight - windowHeight) / 2;
+        }else{
+          var cardHeight = 0.75 * windowHeight;
+          var cardTop = windowHeight / 2 - cardHeight / 2;
+          var contentWidth = cardHeight * ratio;
+          var contentLeft = -(contentWidth - windowWidth) / 2;
+        }
+        var div = $elem.parent();
+        var card = document.getElementById('cardCtrl');
+
+        div[0].style['width'] = contentWidth + 'px';
+        div[0].style['left'] = contentLeft + 'px';  
+        card.style['width'] = windowWidth + 'px';
+        card.style['height'] = cardHeight + 'px';
+        card.style['top'] = cardTop + 'px';  
+      }
+
+      $elem.on('error', function() {
+        $scope.cardSwipedLeft($scope.cardIndex);
+      });
+
+      $elem[0].addEventListener('loadedmetadata', function() {
+       setStyle();
+      });
+      $elem.on('load', function() {
+       setStyle();
+      });
      }
    };
 })
 
 
 
-.controller('CardsCtrl', function($scope, $state, $http, $ionicSwipeCardDelegate, $sce) {
+.controller('CardsCtrl', function($scope, $state, $http, $ionicSwipeCardDelegate, $sce, $ionicModal) {
 
   $global.cardData = [{
     title: 'Swipe down to clear the card',
@@ -129,10 +163,16 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
           feed.data = $sce.trustAsResourceUrl(feed.data);
         }else if(feed.type == 'album') {
           feed.data = JSON.parse(feed.data);
-          for(var pic in feed.data) {
+          for(var pic of feed.data) {
             pic.url = $sce.trustAsResourceUrl(pic.url);
           }
+
           feed.cover = feed.data[0].url;
+        }else if(feed.type == 'article') {
+          feed.data = JSON.parse(feed.data);
+          if(feed.data.cover == null) { // hide cards without cover.
+            continue;
+          }
         }
 
         feed.cardId = cardId;
@@ -141,6 +181,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
         $global.cardData.push(feed);
         cardId += 1;
       }
+
       $scope.addCard();
   }, function errorCallback(response) {
     // called asynchronously if an error occurs
@@ -150,24 +191,51 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
   $scope.cards = Array.prototype.slice.call($global.cardData, 0, 0);
   $scope.cardIndex = -1;
 
+
   $scope.cardSwiped = function(index) {
 
   };
 
-  $scope.showImage = function(card) {
+  $scope.showModal = function(templateUrl, card) {
+    $ionicModal.fromTemplateUrl(templateUrl, {
+      scope: $scope,
+    }).then(function(modal) {
+      $scope.modal = modal;
+      $scope.card = card;
+      $scope.modal.show();
+    });
+  }
+   
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+    $scope.modal.remove()
+  };
 
-    var img = new Image();
-      img.crossOrigin = 'Anonymous';
-      img.onload = function(){
-          var canvas = document.createElement('CANVAS');
-          var ctx = canvas.getContext('2d');
-          canvas.height = this.height;
-          canvas.width = this.width;
-          ctx.drawImage(this,0,0);
-          var dataURL = canvas.toDataURL(outputFormat || 'image/png');
-          // window.FullScreenImage.showImageURL(card.url);
-          canvas = null; 
-    };   
+  $scope.showImage = function(card) {
+    if(card.type == 'album') {
+      $scope.showModal('templates/albumview.html', card);
+    }else if(card.type == 'video') {
+      var elem = document.getElementById("cardVideo");
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      }
+    }else if(card.type == 'image') {
+      $scope.showModal('templates/imgview.html', card);
+    }else if(card.type == 'article') {
+      $state.go('content', 
+        {cardId: card.cardId}
+      );
+    }
+  }
+
+  $scope.removeCard = function() {
+    $scope.cards.splice(0, 1);
   }
 
   $scope.cardSwipedLeft = function(index) {
@@ -183,7 +251,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
     });
 
     $scope.addCard();
-    $scope.cards.splice(0, 1);
+    $scope.removeCard();
   }
 
   $scope.cardSwipedRight = function(index) {
@@ -223,6 +291,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
         var image = new Image();
         image.src = nextCard.url;
       }
+
     }
   }
 
@@ -239,13 +308,16 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
   console.log($global.cardData);
   for(var cardType of $global.cardData) { // find content with cardId.
     if(cardType.cardId == $stateParams.cardId) {
-      $http.get($scope.url).then(function successCallback(response) {
-        $scope.content = reponse.data;
-        $scope.title = cardType.title;    
-      }, function errorCallback(response) {
-        // called asynchronously if an error occurs
-        // or server returns response with an error status.
-      });
+      // $http.get(cardType.url).then(function successCallback(response) {
+      //   $scope.content = reponse.data;
+      //   $scope.title = cardType.title;    
+      // }, function errorCallback(response) {
+      //   // called asynchronously if an error occurs
+      //   // or server returns response with an error status.
+      // });
+
+      $scope.content = cardType.data.content;
+      $scope.title = cardType.title;
       
     }
   }

@@ -203,7 +203,7 @@
         this.rightText.style["top"] = (window.innerHeight / 2 
                             - targetSize / 2) + "px";
         this.rightText.style["z-index"] = "100";
-        this.rightText.style["opacity"] = "0.2";
+        this.rightText.style["opacity"] = "0";
       }else{
         this.onCardSwipeRight && this.onCardSwipeRight();
         // turn on the icon.
@@ -215,14 +215,14 @@
         this.leftText.style["top"] = (window.innerHeight / 2 
                             - targetSize / 2) + "px";
         this.leftText.style["z-index"] = "100";
-        this.leftText.style["opacity"] = "0.2";
+        this.leftText.style["opacity"] = "0";
       }
       
       // Fly out
       var rotateTo = (this.rotationAngle + (this.rotationDirection * 0.6)) || (Math.random() * 0.4);
       var duration = this.rotationAngle ? 0.2 : 0.5;
-      this.el.style[TRANSITION] = '-webkit-transform ' + duration + 's ease-in-out';
-      this.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + this.x + ',' + (window.innerHeight * 1.5) + 'px, 0) rotate(' + rotateTo + 'rad)';
+      // this.el.style[TRANSITION] = '-webkit-transform ' + duration + 's ease-in-out';
+      // this.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + this.x + ',' + (window.innerHeight * 1.5) + 'px, 0) rotate(' + rotateTo + 'rad)';
       this.onSwipe && this.onSwipe();
 
       // Trigger destroy after card has swiped out
