@@ -38,7 +38,8 @@ class FeedHandler(web.RequestHandler):
         '''
         return all feeds in the database that have images.
         '''
-        whitelist = [
+        # filter data sent to client. save bandwidth.
+        data_whitelist = [
             'content', 'title', 'cover'
         ]
         print '[feed] get feed content'
@@ -53,8 +54,14 @@ class FeedHandler(web.RequestHandler):
         feeds = []
         for entry in entries:
             feed = dict(entry)
-            feed = {key: feed[key] for key in whitelist}
             link = feed.get('link')
+            data = feed.get('data')
+            if data:
+              data = json.loads(data)
+              data = {key: data[key] for key in data_whitelist}
+            else:
+              data = {}
+            feed['data'] = json.dumps(data)
             if link and link not in user_links: # user hasn't read this yet.
                 feeds.append(feed)
 
