@@ -13,11 +13,17 @@ import json
 
 def fetch_process_method():
     while True:
-        max_count = 30
         # fetch hacker news.
-        url = 'http://hnrss.org/newest'
+        urls = ['http://hnrss.org/newest',
+                'http://www.kurzweilai.net/feed',
+                'https://news.google.com/news?pz=1&cf=all&ned=us&hl=en&topic=h&num=3&output=rss',
+                'http://www.engadget.com/rss-full.xml',
+                'http://rss.sciam.com/ScientificAmerican-Global',
+                'http://www.theverge.com/rss/full.xml',
+                'http://www.technologyreview.com/rss/rss.aspx',
+                'http://feeds.newscientist.com/science-news',
+                'http://venturebeat.com/category/cloud/feed/']
         rss.fetch(url, max_count=max_count)
-        imgur.fetch(max_count=max_count)
         time.sleep(3600)
 
 
