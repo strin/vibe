@@ -14,7 +14,6 @@ import json
 def fetch_process_method():
     while True:
         # fetch hacker news.
-        max_count = 1000
         urls = ['http://hnrss.org/newest',
                 'http://www.kurzweilai.net/feed',
                 'https://news.google.com/news?pz=1&cf=all&ned=us&hl=en&topic=h&num=3&output=rss',
