@@ -17,6 +17,9 @@ def fetch(url, max_count=30):
                 break
             try:
                 link = entry.get('link') # fetch link only.
+                print colorize('[rss link] [source: %s] %s' % (url, link), 'blue')
+                if db.get_by_url(link): # skip extraction if url exists in db. save extractor quota.
+                  continue
                 # use diffbot only to extract contact.
                 data = extract_reader_html(link)
                 html = data.get('content')
