@@ -40,6 +40,7 @@ class FeedHandler(web.RequestHandler):
         return all feeds in the database that have images.
         '''
         # filter data sent to client. save bandwidth.
+        max_count = 30
         with Timer('feed handler'):
           data_whitelist = [
               'content', 'title', 'cover'
@@ -55,6 +56,8 @@ class FeedHandler(web.RequestHandler):
           entries = db.get_all_entries()
           feeds = []
           for entry in entries:
+              if len(feeds) >= max_count:
+                  break
               feed = dict(entry)
               link = feed.get('link')
               data = feed.get('data')
