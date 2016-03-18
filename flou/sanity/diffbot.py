@@ -9,12 +9,17 @@ def extract_reader_html(url):
                             'token': '006799de5f2050af55268df703a73840',
                             'url': url
                         }))
-    data = json.load(response)
-    images = data.get("images")
+    print 'url', 'http://api.diffbot.com/v3/article?%s' \
+                        % urllib.urlencode({
+                            'token': '006799de5f2050af55268df703a73840',
+                            'url': url
+                        })
+    data = json.load(response)['objects'][0]
+    images = data.get('images')
     image = ''
     if images:
         for potential_im in images:  # extract image based on diffbot's visual analysis.
-            if potential_im['primary']:
+            if 'primary' in potential_im and potential_im['primary']:
                 image = potential_im['url']
         if not image: # if visual analysis fails, then use defifinition of image.
             # sort images based on resolution.
