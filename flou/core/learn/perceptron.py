@@ -15,6 +15,7 @@ def dict_dot(weight, ex):
 
 def dict_mul_scalar(ex, scalar):
     res = dict(ex)
+    print res
     for key in res:
         res[key] *= scalar
     return res

@@ -36,9 +36,9 @@ def get_feature_by_url(link):
         if row:
             row = dict(row)
             if 'feature' in row:
-                row['feature'] = json.loads(row['feature'])
+                return json.loads(row['feature'])
         return row
-    return None
+    return {}
 
 
 def save_feature_by_url(link, feature):

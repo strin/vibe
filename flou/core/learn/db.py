@@ -36,15 +36,14 @@ def get_model_by_userid(userid):
         row = cursor.fetchone()
         if row:
             row = dict(row)
-            row['model'] = json.loads(row['model'])
-            return row
-    return None
+            return json.loads(row['model'])
+    return {}
 
 
 def save_model_by_userid(userid, model):
     with DBConn() as conn:
         cursor = conn.cursor()
-        if get_weight_by_userid(userid):
+        if get_model_by_userid(userid):
             cursor.execute("""
                             UPDATE model
                             SET model=:model

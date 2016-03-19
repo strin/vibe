@@ -50,6 +50,35 @@ def get_links_by_user(userid):
             return []
 
 
+def get_actions_by_user(userid):
+    with DBConn() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+                       SELECT link, action FROM swipe WHERE userid=:userid
+                       """, dict(userid=userid))
+        rows = cursor.fetchall()
+        action_by_link = {}
+        if rows:
+            action_by_link = {
+                row['link']: row['action'] for row in rows
+            }
+        return action_by_link
+
+
+def get_userids():
+    with DBConn() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+                       SELECT DISTINCT userid FROM swipe
+                       """)
+        rows = cursor.fetchall()
+        if rows:
+            userids = [row['userid'] for row in rows]
+            return userids
+        else:
+            return []
+
+
 def add_entry(userid, link, action):
     with DBConn() as conn:
         cursor = conn.cursor()
@@ -81,4 +110,6 @@ def add_entry(userid, link, action):
                          link=link,
                          action=action)
                     )
+
+
 
