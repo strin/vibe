@@ -1,6 +1,7 @@
 from tornado import (ioloop, web)
 
 import flou.channel.db as db
+import flou.user.pred_db as pred_db
 import flou.channel.rss as rss
 import flou.channel.imgur as imgur
 from flou.utils import Timer
@@ -48,26 +49,39 @@ class FeedHandler(web.RequestHandler):
           print '[feed] get feed content'
           userid = self.get_argument('userid')
           print '[feed] userid', userid
-          user_links = user_db.get_links_by_user(userid)
-          user_links = set(user_links)
+          user_links_sorted = pred_db.get_links_sorted(userid)
+          user_links_read = user_db.get_links_by_user(userid)
+          user_links_read = set(user_links_read)
           print '[feed] user_links', user_links
 
           self.set_header("Access-Control-Allow-Origin", "http://localhost:8100")
+
+          # get links by preference.
           entries = db.get_all_entries()
           feeds = []
+          feed_by_link = {}
+          # TODO: modify feed_db so that link is the primary key.
+          # do this more efficiently.
           for entry in entries:
-              if len(feeds) >= max_count:
-                  break
               feed = dict(entry)
               link = feed.get('link')
-              data = feed.get('data')
-              if data:
-                data = json.loads(data)
-                data = {key: data[key] for key in data_whitelist}
-              else:
-                data = {}
-              feed['data'] = json.dumps(data)
-              if link and link not in user_links: # user hasn't read this yet.
+              feed_by_link[link] = feed
+
+          # retrieve feed content.
+          for link in user_links_sorted:
+              if len(feeds) > max_count:
+                  break
+              if link in feed_by_link and link not in user_links_read:
+                  feed = feed_by_link[link]
+                  data = feed.get('data')
+
+                      if data:
+                          data = json.loads(data)
+                          data = {key: data[key] for key in data_whitelist}
+                      else:
+                          data = {}
+                      feed['data'] = json.dumps(data)
+
                   feeds.append(feed)
 
           self.write({
