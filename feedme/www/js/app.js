@@ -237,6 +237,9 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
     $scope.modal.remove()
   };
 
+
+  
+
   $scope.showImage = function(card) {
     if(card.type == 'album') {
       $scope.showModal('templates/albumview.html', card);
@@ -337,6 +340,23 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
       $scope.content = cardType.data.content;
       $scope.title = cardType.title;
       
+      function checkContentLoaded() {
+        var vibeContent = document.getElementById('vibe-content');
+        console.log('vibe content', vibeContent.innerHTML);
+        if(vibeContent.innerHTML.length != 0) {
+          console.log('vibe content loaded');
+        }else{
+          setTimeout(checkContentLoaded, 30);
+        }
+        var contentLinks = document.querySelectorAll('.vibe-content a');
+        console.log('contentLinks', contentLinks);
+        for(var ci = 0; ci < contentLinks.length; ci++) {
+          var link = contentLinks[ci];
+          console.log('link', link);
+          link.setAttribute('target', '_blank');
+        }
+      }
+      checkContentLoaded();
     }
   }
 
