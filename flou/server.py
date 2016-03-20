@@ -11,6 +11,7 @@ import flou.user.db as user_db
 from multiprocessing import Process
 import time
 import json
+import random
 
 
 def fetch_process_method():
@@ -50,9 +51,9 @@ class FeedHandler(web.RequestHandler):
           userid = self.get_argument('userid')
           print '[feed] userid', userid
           user_links_sorted = pred_db.get_links_sorted(userid)
+          print '[feed] user links sorted', user_links_sorted
           user_links_read = user_db.get_links_by_user(userid)
           user_links_read = set(user_links_read)
-          print '[feed] user_links', user_links
 
           self.set_header("Access-Control-Allow-Origin", "http://localhost:8100")
 
@@ -60,27 +61,32 @@ class FeedHandler(web.RequestHandler):
           entries = db.get_all_entries()
           feeds = []
           feed_by_link = {}
+          all_links = set()
           # TODO: modify feed_db so that link is the primary key.
           # do this more efficiently.
           for entry in entries:
               feed = dict(entry)
               link = feed.get('link')
               feed_by_link[link] = feed
+              all_links.add(link)
+
+          other_links = list(all_links.difference(user_links_sorted))
+          random.shuffle(other_links)
 
           # retrieve feed content.
-          for link in user_links_sorted:
+          for link in user_links_sorted + other_links:
               if len(feeds) > max_count:
                   break
               if link in feed_by_link and link not in user_links_read:
                   feed = feed_by_link[link]
                   data = feed.get('data')
 
-                      if data:
-                          data = json.loads(data)
-                          data = {key: data[key] for key in data_whitelist}
-                      else:
-                          data = {}
-                      feed['data'] = json.dumps(data)
+                  if data:
+                      data = json.loads(data)
+                      data = {key: data[key] for key in data_whitelist}
+                  else:
+                      data = {}
+                  feed['data'] = json.dumps(data)
 
                   feeds.append(feed)
 
@@ -92,11 +98,13 @@ class FeedHandler(web.RequestHandler):
 class SwipeHandler(web.RequestHandler):
     def post(self):
         data = json.loads(self.request.body)
+        print 'swipe data', data
         userid = data.get('userid')
         link = data.get('link')
         action = data.get('action')
         print 'link', link
         user_db.add_entry(userid, link, action)
+        print 'swipe successful'
         self.write({
             'status': 'OK'
         })

@@ -26,25 +26,28 @@ class DBConn(object):
         self.conn.close()
 
 
-def get_feature_by_url(link):
+def get_row_by_url(link):
     with DBConn() as conn:
         cursor = conn.cursor()
         cursor.execute("""
                        SELECT * FROM feature WHERE link=:link
                        """, dict(link=link))
         row = cursor.fetchone()
-        if row:
-            row = dict(row)
-            if 'feature' in row:
-                return json.loads(row['feature'])
         return row
+
+def get_feature_by_url(link):
+    row = get_row_by_url(link)
+    if row:
+        row = dict(row)
+        if 'feature' in row:
+            return json.loads(row['feature'])
     return {}
 
 
 def save_feature_by_url(link, feature):
     with DBConn() as conn:
         cursor = conn.cursor()
-        if get_feature_by_url(link):
+        if get_row_by_url(link):
             cursor.execute("""
                             UPDATE feature
                             SET feature=:feature
