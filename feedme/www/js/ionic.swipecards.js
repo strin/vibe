@@ -195,7 +195,7 @@
       if(this.x < 0) {
         this.onCardSwipeLeft && this.onCardSwipeLeft();
         // turn on the icon.
-        this.rightText.style["-webkit-transition"] = "all 0.5s ease-out";
+        this.rightText.style["-webkit-transition"] = "all 0.5s linear";
         targetSize = 300;
         this.rightText.style["font-size"] = targetSize + "px";
         this.rightText.style["right"] = (window.innerWidth / 2 
@@ -204,10 +204,11 @@
                             - targetSize / 2) + "px";
         this.rightText.style["z-index"] = "100";
         this.rightText.style["opacity"] = "0";
+        this.isTextFlying = true;
       }else{
         this.onCardSwipeRight && this.onCardSwipeRight();
         // turn on the icon.
-        this.leftText.style["-webkit-transition"] = "all 0.5s ease-out";
+        this.leftText.style["-webkit-transition"] = "all 0.5s linear";
         targetSize = 300;
         this.leftText.style["font-size"] = targetSize + "px";
         this.leftText.style["left"] = (window.innerWidth / 2 
@@ -216,6 +217,7 @@
                             - targetSize / 2) + "px";
         this.leftText.style["z-index"] = "100";
         this.leftText.style["opacity"] = "0";
+        this.isTextFlying = true;
       }
       
       // Fly out
@@ -227,6 +229,8 @@
 
       // Trigger destroy after card has swiped out
       setTimeout(function() {
+        this.isTextFlying = false;
+
         // reset yes-text style.
         self.rightText.style["font-size"] = null;
         self.rightText.style["opacity"] = null;
@@ -364,6 +368,7 @@
           el: el,
           leftText: leftText,
           rightText: rightText,
+          isTextFlying: false,
           onSwipe: function() {
             $timeout(function() {
               $scope.onCardSwipe();
@@ -374,11 +379,11 @@
             var self = this;
             $timeout(function() {
               if (amt > 0) {
-                if (self.leftText) self.leftText.style.opacity = fadeFn(amt);
-                if (self.rightText) self.rightText.style.opacity = 0;
+                if (self.leftText && !self.isTextFlying) self.leftText.style.opacity = fadeFn(amt);
+                if (self.rightText && !self.isTextFlying) self.rightText.style.opacity = 0;
               } else {
-                if (self.leftText) self.leftText.style.opacity = 0;
-                if (self.rightText) self.rightText.style.opacity = fadeFn(-amt);
+                if (self.leftText && !self.isTextFlying) self.leftText.style.opacity = 0;
+                if (self.rightText && !self.isTextFlying) self.rightText.style.opacity = fadeFn(-amt);
               }
               $scope.onPartialSwipe({amt: amt});
             });
