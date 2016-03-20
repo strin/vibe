@@ -31,19 +31,17 @@ while True:
                                  weight=model['weight'],
                                  G2=model['G2'])
 
-        links = user_db.get_links_by_user(userid)
-
         # training.
         exs = []
         labels = []
-        for link in links:
-            action_by_link = user_db.get_actions_by_user(userid)
-            for (link, action) in action_by_link.items():
-                exs.append(feature_db.get_feature_by_url(link))
-                if action == 'like': # like this content.
-                    labels.append(1.)
-                else: # dislike this content.
-                    labels.append(0.)
+
+        action_by_link = user_db.get_actions_by_user(userid)
+        for (link, action) in action_by_link.items():
+            exs.append(feature_db.get_feature_by_url(link))
+            if action == 'like': # like this content.
+                labels.append(1.)
+            else: # dislike this content.
+                labels.append(0.)
 
         for it in range(NUM_ITER):
             learner.train(exs, labels)
