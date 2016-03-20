@@ -10,6 +10,13 @@ $global = {
   // 'backend': '/feed',
 };
 
+var push = new Ionic.Push({});
+
+push.register(function(token) {
+  // Log out your device token (Save this!)
+  console.log("Got Token:",token.token);
+});
+
 angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards'])
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
