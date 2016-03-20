@@ -5,11 +5,19 @@
     top: 0 !important;
     left: 0 !important;
 }
+
+.image-modal .btn-close {
+    float: right; 
+    font-size:25px; 
+    color: gray;
+    margin-right: 20px; 
+    margin-top: 20px;
+}
  
 .transparent {
   -webkit-transition: background 1s ease-in-out;
     transition: background 1s ease-in-out;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.9);
 }
 
  
@@ -31,3 +39,4 @@
     width: 100%;
     text-align: center;
 }
+
