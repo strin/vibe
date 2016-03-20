@@ -157,25 +157,27 @@ swipe-card.pop-in {
 
 .no-text {
     position: fixed;
+    pointer-events: none;
     top: 45%;
     left: 10px;
     color: #33cd5f;
-    font-size: 100px;
+    font-size: 150px;
     font-family: helvetica neue;
     font-weight:  bold;
-    z-index: -1;
+    z-index: 100;
     opacity: 0;
 }
 
 .yes-text {
     position: fixed;
+    pointer-events: none;
     top: 45%;
     right: 10px;
     color: #ef473a;
-    font-size: 100px;
+    font-size: 150px;
     font-family: helvetica neue;
     font-weight:  bold;
-    z-index: -1;
+    z-index: 100;
     opacity: 0;
 }
 

@@ -195,7 +195,7 @@
       if(this.x < 0) {
         this.onCardSwipeLeft && this.onCardSwipeLeft();
         // turn on the icon.
-        this.rightText.style["-webkit-transition"] = "all 0.3s ease";
+        this.rightText.style["-webkit-transition"] = "all 0.5s ease-out";
         targetSize = 300;
         this.rightText.style["font-size"] = targetSize + "px";
         this.rightText.style["right"] = (window.innerWidth / 2 
@@ -207,7 +207,7 @@
       }else{
         this.onCardSwipeRight && this.onCardSwipeRight();
         // turn on the icon.
-        this.leftText.style["-webkit-transition"] = "all 0.3s ease";
+        this.leftText.style["-webkit-transition"] = "all 0.5s ease-out";
         targetSize = 300;
         this.leftText.style["font-size"] = targetSize + "px";
         this.leftText.style["left"] = (window.innerWidth / 2 
@@ -219,8 +219,8 @@
       }
       
       // Fly out
-      var rotateTo = (this.rotationAngle + (this.rotationDirection * 0.6)) || (Math.random() * 0.4);
-      var duration = this.rotationAngle ? 0.2 : 0.5;
+      // var rotateTo = (this.rotationAngle + (this.rotationDirection * 0.6)) || (Math.random() * 0.4);
+      // var duration = this.rotationAngle ? 0.2 : 0.5;
       // this.el.style[TRANSITION] = '-webkit-transform ' + duration + 's ease-in-out';
       // this.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + this.x + ',' + (window.innerHeight * 1.5) + 'px, 0) rotate(' + rotateTo + 'rad)';
       this.onSwipe && this.onSwipe();
@@ -244,7 +244,7 @@
         self.leftText.style["z-index"] = null;
         self.onDestroy && self.onDestroy();
 
-      }, duration * 1000);
+      }, 500);
     },
 
     /**
