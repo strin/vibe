@@ -329,6 +329,9 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
       
       $scope.cards.push(angular.extend({}, newCard));
 
+    }else{
+      console.log('all cards finished');
+      document.getElementById('loading-text').innerHTML = "<h1>Wow, you've read all.</h1>"
     }
   }
 
