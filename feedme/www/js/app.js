@@ -93,6 +93,8 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
 
         var ratio = w / h;
 
+        console.log('elem', $elem, 'ratio', ratio, 'scope', $scope.card);
+
         // if it's a vertical card, then scale to fit screen width.
         // if it's a horizontal card, then scale ti fit 75% screen height.
         if(ratio < 1) {
@@ -107,7 +109,15 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
           var contentLeft = -(contentWidth - windowWidth) / 2;
         }
         var div = $elem.parent();
-        var card = document.getElementById('cardCtrl');
+        
+        // var card = document.getElementById('cardCtrl');
+        var card = div.parent().parent().parent();
+        console.log('card tag', card[0].tagName);
+        while(card.tagName != 'SWIPE-CARD' && card.tagName != null) {
+          card = card.parent();
+        }
+        console.log('card parent', card);
+        card = card[0];
 
         div[0].style['width'] = contentWidth + 'px';
         // div[0].style['left'] = contentLeft + 'px';  
@@ -209,6 +219,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
       }
 
       $scope.addCard();
+      console.log('scope cards', $scope.cards);
   }, function errorCallback(response) {
     // called asynchronously if an error occurs
     // or server returns response with an error status.
@@ -262,7 +273,9 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
   }
 
   $scope.removeCard = function() {
-    $scope.cards.splice(0, 1);
+    setTimeout(function() {
+      $scope.cards.splice(0, 1);  
+    }, 500); // wait a couple of milliseconds for animation to complete.
   }
 
   $scope.cardSwipedLeft = function(index) {
@@ -294,7 +307,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
     });
 
     $scope.addCard();
-    $scope.cards.splice(0, 1);
+    $scope.removeCard();
   }
 
   $scope.cardDestroyed = function(index) {

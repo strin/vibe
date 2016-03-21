@@ -221,10 +221,28 @@
       }
       
       // Fly out
-      // var rotateTo = (this.rotationAngle + (this.rotationDirection * 0.6)) || (Math.random() * 0.4);
-      // var duration = this.rotationAngle ? 0.2 : 0.5;
+      var rotateTo = (this.rotationAngle + (this.rotationDirection * 0.6)) || (Math.random() * 0.4);
       // this.el.style[TRANSITION] = '-webkit-transform ' + duration + 's ease-in-out';
-      // this.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + this.x + ',' + (window.innerHeight * 1.5) + 'px, 0) rotate(' + rotateTo + 'rad)';
+
+      self.el.style['z-index'] = 99;
+      self.el.style.opacity = 1;
+      self.el.style['pointer-events'] = 'none';
+      this.el.style[TRANSITION] = 'all 1s ease-in-out';
+      this.el.style.opacity = 0.;
+      // function dimEl() {
+      //   self.el.style.opacity = self.el.style.opacity / 2;
+      //   console.log('element', self.el.style.opacity);
+      //   if(self.el.style.opacity > 1e-3) {
+      //     setTimeout(dimEl, 100);
+      //   }
+      // }
+      // dimEl();
+      var shiftX = this.x - window.innerWidth / 2; 
+      var shiftY = this.y - window.innerHeight / 2;
+      console.log('x, y', this.x, this.y);
+
+      this.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + this.x * 15
+        + 'px,' + this.y * 15  + 'px, 0) rotate(' + rotateTo + 'rad)';
       this.onSwipe && this.onSwipe();
 
       // Trigger destroy after card has swiped out
@@ -375,15 +393,17 @@
             });
           },
           onPartialSwipe: function(amt) {
-            // swipeCards.partial(amt);
+            swipeCards.partial(amt);
             var self = this;
             $timeout(function() {
               if (amt > 0) {
                 if (self.leftText && !self.isTextFlying) self.leftText.style.opacity = fadeFn(amt);
                 if (self.rightText && !self.isTextFlying) self.rightText.style.opacity = 0;
+                // self.el.style.opacity = 1-fadeFn(amt / 8);
               } else {
                 if (self.leftText && !self.isTextFlying) self.leftText.style.opacity = 0;
                 if (self.rightText && !self.isTextFlying) self.rightText.style.opacity = fadeFn(-amt);
+                // self.el.style.opacity = 1-fadeFn(- amt / 8);
               }
               $scope.onPartialSwipe({amt: amt});
             });
@@ -482,11 +502,13 @@
         };
 
         this.partial = function(amt) {
-          // cards = $element[0].querySelectorAll('swipe-card');
-          // console.log("cards", cards);
-          // firstCard = cards[0];
-          // secondCard = cards.length > 2 && cards[1];
-          // thirdCard = cards.length > 3 && cards[2];
+          cards = $element[0].querySelectorAll('swipe-card');
+          
+          firstCard = cards[0];
+          secondCard = cards.length > 2 && cards[1];
+          thirdCard = cards.length > 3 && cards[2];
+
+          console.log('cards', secondCard);
 
           // secondCard && bringCardUp(secondCard, amt, 4);
           // thirdCard && bringCardUp(thirdCard, amt, 8);

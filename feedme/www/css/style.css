@@ -29,7 +29,7 @@ swipe-card {
   display: none;
   position: fixed;
   background-color: black;
-  -webkit-transform: scale(1,1);
+  /*-webkit-transform: scale(1,1);*/
   left: 0%;
   top: 0%;
   width: 100%;
@@ -38,7 +38,7 @@ swipe-card {
   border-radius: 4px;
   overflow: hidden;
   height: 0px;
-  -webkit-animation-fill-mode: forwards;
+  /*-webkit-animation-fill-mode: forwards;*/
 
   -moz-box-shadow:0 0 20px 0 black;
   -webkit-box-shadow:0 0 20px 0 black;
@@ -48,6 +48,7 @@ swipe-card {
 
 swipe-card .swipe-card{
   height: 50px;
+  opacity: 1;
 }
 
 swipe-card .swipe-ctrl {
