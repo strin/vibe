@@ -25,6 +25,18 @@
   position: fixed;
 }
 
+.loading-text {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+}
+
+.loading-text h1 {
+  color: dimgrey;
+  font-size: 15pt;
+}
+
 swipe-card {
   display: none;
   position: fixed;
