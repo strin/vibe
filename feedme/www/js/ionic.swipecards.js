@@ -227,7 +227,7 @@
       self.el.style['z-index'] = 99;
       self.el.style.opacity = 1;
       self.el.style['pointer-events'] = 'none';
-      this.el.style[TRANSITION] = 'all 1s ease-in-out';
+      this.el.style[TRANSITION] = 'all 1s linear';
       this.el.style.opacity = 0.;
       // function dimEl() {
       //   self.el.style.opacity = self.el.style.opacity / 2;

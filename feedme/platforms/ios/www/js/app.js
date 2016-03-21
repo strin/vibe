@@ -10,6 +10,13 @@ $global = {
   // 'backend': '/feed',
 };
 
+var push = new Ionic.Push({});
+
+push.register(function(token) {
+  // Log out your device token (Save this!)
+  console.log("Got Token:",token.token);
+});
+
 angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards'])
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
@@ -86,6 +93,8 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
 
         var ratio = w / h;
 
+        console.log('elem', $elem, 'ratio', ratio, 'scope', $scope.card);
+
         // if it's a vertical card, then scale to fit screen width.
         // if it's a horizontal card, then scale ti fit 75% screen height.
         if(ratio < 1) {
@@ -100,7 +109,15 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
           var contentLeft = -(contentWidth - windowWidth) / 2;
         }
         var div = $elem.parent();
-        var card = document.getElementById('cardCtrl');
+        
+        // var card = document.getElementById('cardCtrl');
+        var card = div.parent().parent().parent();
+        console.log('card tag', card[0].tagName);
+        while(card.tagName != 'SWIPE-CARD' && card.tagName != null) {
+          card = card.parent();
+        }
+        console.log('card parent', card);
+        card = card[0];
 
         div[0].style['width'] = contentWidth + 'px';
         // div[0].style['left'] = contentLeft + 'px';  
@@ -129,6 +146,8 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
           var image = new Image();
           image.src = nextCard.data.cover;
         }
+
+        document.getElementById("loading-text").style.opacity = 0.;
       }
 
       $elem.on('error', function() {
@@ -202,6 +221,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
       }
 
       $scope.addCard();
+      console.log('scope cards', $scope.cards);
   }, function errorCallback(response) {
     // called asynchronously if an error occurs
     // or server returns response with an error status.
@@ -215,12 +235,13 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
 
   };
 
-  $scope.showModal = function(templateUrl, card) {
+
+  $scope.showModal = function(templateUrl, url) {
     $ionicModal.fromTemplateUrl(templateUrl, {
       scope: $scope,
     }).then(function(modal) {
       $scope.modal = modal;
-      $scope.card = card;
+      $scope.url = url;
       $scope.modal.show();
     });
   }
@@ -232,7 +253,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
 
   $scope.showImage = function(card) {
     if(card.type == 'album') {
-      $scope.showModal('templates/albumview.html', card);
+      // $scope.showModal('templates/albumview.html', card); // deprecated.
     }else if(card.type == 'video') {
       var elem = document.getElementById("cardVideo");
       if (elem.requestFullscreen) {
@@ -245,7 +266,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
         elem.webkitRequestFullscreen();
       }
     }else if(card.type == 'image') {
-      $scope.showModal('templates/imgview.html', card);
+      $scope.showModal('templates/imgview.html', card.url);
     }else if(card.type == 'article') {
       $state.go('content', 
         {cardId: card.cardId}
@@ -254,7 +275,9 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
   }
 
   $scope.removeCard = function() {
-    $scope.cards.splice(0, 1);
+    setTimeout(function() {
+      $scope.cards.splice(0, 1);  
+    }, 500); // wait a couple of milliseconds for animation to complete.
   }
 
   $scope.cardSwipedLeft = function(index) {
@@ -286,7 +309,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
     });
 
     $scope.addCard();
-    $scope.cards.splice(0, 1);
+    $scope.removeCard();
   }
 
   $scope.cardDestroyed = function(index) {
@@ -295,6 +318,8 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
 
   $scope.addCard = function() {
     console.log('[card] adding new card');
+    document.getElementById("loading-text").style.opacity = 1.;
+
     if($scope.cardIndex + 1 < $global.cardData.length) {  
       $scope.cardIndex += 1; 
 
@@ -316,7 +341,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
   };
 })
 
-.controller('ContentCtrl', function($scope, $stateParams, $http) {
+.controller('ContentCtrl', function($scope, $stateParams, $http, $compile, $ionicModal) {
   for(var cardType of $global.cardData) { // find content with cardId.
     if(cardType.cardId == $stateParams.cardId) {
       // $http.get(cardType.url).then(function successCallback(response) {
@@ -330,6 +355,56 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
       $scope.content = cardType.data.content;
       $scope.title = cardType.title;
       
+      $scope.showModal = function(templateUrl, url) {
+        $ionicModal.fromTemplateUrl(templateUrl, {
+          scope: $scope,
+        }).then(function(modal) {
+          $scope.modal = modal;
+          $scope.url = url;
+          $scope.modal.show();
+        });
+      };
+       
+      $scope.closeModal = function() {
+        $scope.modal.hide();
+        $scope.modal.remove()
+      };
+
+
+      $scope.showImageModal = function(url) {
+        console.log('show image modal');
+        $scope.showModal("templates/imgview.html", url);
+      }
+
+      function checkContentLoaded() {
+        var vibeContent = document.getElementById('vibe-content');
+        if(vibeContent.innerHTML.length == 0) {
+          setTimeout(checkContentLoaded, 30);
+          return;
+        }
+        var contentLinks = document.querySelectorAll('.vibe-content a');
+        console.log('contentLinks', contentLinks);
+        for(var ci = 0; ci < contentLinks.length; ci++) {
+          var link = contentLinks[ci];
+          link.setAttribute('target', '_blank');
+        }
+
+        // add image modal events.
+        var imageLinks = document.querySelectorAll('.vibe-content figure img');
+        for(var ci = 0; ci < imageLinks.length; ci++) {
+          var link = imageLinks[ci];
+          var src = link.getAttribute('src');
+          link.setAttribute("ng-controller", "CardCtrl");
+          link.setAttribute("ng-click", "showImageModal('" + src + "')");
+        }
+
+        // to enable the ng-click events, we need to compile 
+        var figures = document.querySelectorAll('.vibe-content figure');
+        for(var ci = 0; ci < figures.length; ci++) {
+          $compile(figures[ci])($scope);
+        }
+      }
+      checkContentLoaded();
     }
   }
 

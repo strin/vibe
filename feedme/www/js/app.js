@@ -146,6 +146,8 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
           var image = new Image();
           image.src = nextCard.data.cover;
         }
+
+        document.getElementById("loading-text").style.opacity = 0.;
       }
 
       $elem.on('error', function() {
@@ -316,6 +318,8 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
 
   $scope.addCard = function() {
     console.log('[card] adding new card');
+    document.getElementById("loading-text").style.opacity = 1.;
+
     if($scope.cardIndex + 1 < $global.cardData.length) {  
       $scope.cardIndex += 1; 
 
@@ -325,6 +329,9 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
       
       $scope.cards.push(angular.extend({}, newCard));
 
+    }else{
+      console.log('all cards finished');
+      document.getElementById('loading-text').innerHTML = "<h1>Wow, you've read all.</h1>"
     }
   }
 

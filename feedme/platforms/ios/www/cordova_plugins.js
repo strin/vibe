@@ -3,6 +3,7 @@ module.exports = [
     {
         "file": "plugins/com.ionic.keyboard/www/keyboard.js",
         "id": "com.ionic.keyboard.keyboard",
+        "pluginId": "com.ionic.keyboard",
         "clobbers": [
             "cordova.plugins.Keyboard"
         ]
@@ -10,6 +11,7 @@ module.exports = [
     {
         "file": "plugins/org.apache.cordova.console/www/console-via-logger.js",
         "id": "org.apache.cordova.console.console",
+        "pluginId": "org.apache.cordova.console",
         "clobbers": [
             "console"
         ]
@@ -17,6 +19,7 @@ module.exports = [
     {
         "file": "plugins/org.apache.cordova.console/www/logger.js",
         "id": "org.apache.cordova.console.logger",
+        "pluginId": "org.apache.cordova.console",
         "clobbers": [
             "cordova.logger"
         ]
@@ -24,6 +27,7 @@ module.exports = [
     {
         "file": "plugins/org.apache.cordova.device/www/device.js",
         "id": "org.apache.cordova.device.device",
+        "pluginId": "org.apache.cordova.device",
         "clobbers": [
             "device"
         ]
@@ -31,6 +35,7 @@ module.exports = [
     {
         "file": "plugins/cordova-plugin-inappbrowser/www/inappbrowser.js",
         "id": "cordova-plugin-inappbrowser.inappbrowser",
+        "pluginId": "cordova-plugin-inappbrowser",
         "clobbers": [
             "cordova.InAppBrowser.open",
             "window.open"
@@ -39,6 +44,7 @@ module.exports = [
     {
         "file": "plugins/es.keensoft.fullscreenimage/www/fullscreenimage.js",
         "id": "es.keensoft.fullscreenimage.FullScreenImage",
+        "pluginId": "es.keensoft.fullscreenimage",
         "clobbers": [
             "window.FullScreenImage"
         ]
