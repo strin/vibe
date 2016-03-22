@@ -78,7 +78,9 @@ swipe-card .title {
   z-index: 10;
   bottom: 0px;
   font-family: helvetica neue;
+  font-size: 25px;
   margin-bottom: 0px;
+  padding-top: 30px;
   background-image: linear-gradient( top, 
       rgba( 0, 0, 0, 0 ) 0%, 
       rgba( 0, 0, 0, 0.8 ) 100% );
@@ -96,6 +98,17 @@ swipe-card .title {
       rgba( 0, 0, 0, 0.8 ) 100% );
 
   height: auto;
+
+  /* summary animation */
+  padding-bottom: 30px;
+  transition: padding-bottom linear 0.5s;  
+  -webkit-transition: padding-bottom height linear 0.5s;  
+  -moz-transition: padding-bottom height linear 0.5s;
+}
+
+swipe-card .title p {
+  font-size: 20px;
+  line-height: 24px;
 }
 
 swipe-card .image {
@@ -199,3 +212,16 @@ swipe-card.pop-in {
   font-family: helvetica neue;
 }
 
+
+.summary {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  margin: 0 0 0 0;
+  height: 0px;
+}
+
+.slider {
+    width: 100%;
+    height: 100%;
+}

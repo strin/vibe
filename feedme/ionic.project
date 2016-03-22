@@ -9,6 +9,10 @@
     {
       "path": "/feed/swipe",
       "proxyUrl": "http://localhost:8889/swipe"
+    },
+    {
+      "path": "/feed/summary",
+      "proxyUrl": "http://localhost:8889/summary"
     }
   ]
 }
