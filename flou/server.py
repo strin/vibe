@@ -25,7 +25,6 @@ def fetch_process_method():
         max_count = 1000
         urls = ['http://hnrss.org/newest',
                 'http://www.kurzweilai.net/feed',
-                'https://news.google.com/news?pz=1&cf=all&ned=us&hl=en&topic=h&num=3&output=rss',
                 'http://www.engadget.com/rss-full.xml',
                 'http://rss.sciam.com/ScientificAmerican-Global',
                 'http://www.theverge.com/rss/full.xml',
@@ -57,6 +56,7 @@ class FeedHandler(web.RequestHandler):
           print '[feed] userid', userid
           user_links_read = user_db.get_links_by_user(userid)
           user_links_read = set(user_links_read)
+          print '[feed] user links read count', len(user_links_read)
           
           preds_sorted = pred_db.get_link_pred_sorted(userid)
           preds_sorted = [(link, pred) for (link, pred) in preds_sorted if link not in user_links_read]
