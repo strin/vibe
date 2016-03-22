@@ -2,11 +2,13 @@
   <!-- <ion-header-bar class="bar-transparent">
       <h1 class="title">Help Out</h1>
     </ion-header-bar> -->
-
+  <div class="loading-text" id="loading-text">
+    <h1><ion-spinner class="spinner-energized">Loading</ion-spinner></h1>
+  </div>
   <swipe-cards>
     <div class="ion-heart-broken no-text" data-pack="default" data-tags="love"></div>
     <swipe-card ng-repeat="card in cards" on-destroy="cardDestroyed(cardIndex)" on-card-swipe="cardSwiped(cardIndex)" on-card-swipe-left="cardSwipedLeft(cardIndex)" on-card-swipe-right="cardSwipedRight(cardIndex)" id="cardCtrl">
-      <div ng-controller="CardCtrl" class="swipe-ctrl" ng-click="showImage(card);"> <!--ui-sref="content({cardId: {{card.cardId}}})">
+      <div class="swipe-ctrl" ng-click="showImage(card);" style="z-index: -{{cardIndex}}"> <!--ui-sref="content({cardId: {{card.cardId}}})">
         <!--window.location.href='#/content/{{card.cardId}}'-->
         <div class="image" ng-if="card.type=='article'">
           <!--TODO: right now, we prefetch all images to improve load time.-->
@@ -38,11 +40,12 @@
           
           
         </div>
+
+        <h3 class="title">
+          <b>{{card.title}}</b>
+        </h3>
       </div>
 
-      <h3 class="title">
-        <b>{{card.title}}</b>
-      </h3>
     </swipe-card>
     <div class="ion-heart yes-text" data-pack="default" data-tags="love"></div>
   </swipe-cards>

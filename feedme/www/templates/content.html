@@ -1,7 +1,39 @@
 <style>
+	/* style for the news article */
+	.vibe-content {
+	  font-family: 'open sans', sans-serif;
+	  line-height: 1.5;
+	  font-size: 18px;
+	}
+
 	.vibe-content img {
 		width: 100%;
 		height: auto;
+		margin: 0px 0px 5px 0px;
+	}
+
+	.vibe-content figure {
+		margin: 0px 0px 5px 0px;
+	}
+
+	.vibe-content a {
+		color: #636262;
+	}
+
+	.vibe-content p, .vibe-content h1, 
+	.vibe-content h2, .vibe-content h3, 
+	.vibe-content h4, .vibe-content h5,
+	.vibe-content blockquote {
+		margin: 0px 10px 20px 10px;
+	}
+
+	.vibe-content figcaption {
+		padding: 10px 10px 10px 10px;
+		font-size: 10px;
+	}
+
+	.vibe-content figcaption a {
+		text-decoration: none;
 	}
 </style>
 
@@ -11,8 +43,10 @@
 	    <i class="ion-chevron-left"></i>
 	  </ion-nav-back-button>
 	</ion-nav-bar>
-  <ion-content class="padding" on-swipe-right="swipe('right');">
-    <div class="vibe-content" ng-bind-html="content">
-    </div>
+  <ion-content class="" on-swipe-right="swipe('right');">
+    <div class="vibe-content" id="vibe-content" ng-bind-html="content"></div> <!--important to be empty-->
   </ion-content>
+  
 </ion-view>
+
+
