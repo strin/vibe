@@ -140,6 +140,9 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
         }, 1000);
 
         console.log('[card] loaded');
+        // load summary async.
+        $scope.loadSummary($scope.card);
+
         // preload next image in the stack.
         if($scope.cardIndex + 1 < $global.cardData.length) {
           var nextCard = $global.cardData[$scope.cardIndex + 1];
@@ -147,6 +150,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
           image.src = nextCard.data.cover;
         }
 
+        // fade loading text.
         document.getElementById("loading-text").style.opacity = 0.;
       }
 
@@ -167,7 +171,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
 
 
 
-.controller('CardsCtrl', function($scope, $state, $http, $ionicSwipeCardDelegate, $sce, $ionicModal) {
+.controller('CardsCtrl', function($scope, $state, $http, $ionicSwipeCardDelegate, $sce, $ionicModal, $compile) {
 
   $global.cardData = [{
     title: 'Swipe down to clear the card',
@@ -234,6 +238,31 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
   $scope.cardSwiped = function(index) {
 
   };
+
+  $scope.loadSummary = function(card) {
+    var url = card.url;
+    $http.get($global.backend + '/summary', {
+      params: {
+        'url': url
+      }
+    }).then(function successCallback(response) {
+      console.log('summaary:', response);
+      card.summaries = response.data.summaries;
+      if(card.summaries.length > 0) {
+        card.summary = card.summaries[0];
+        var titleEls = document.getElementsByClassName('title');
+        var titleContentEls = document.getElementsByClassName('title-content');
+        console.log('titles', document.getElementsByClassName('title'));
+        var titleEl = titleEls[titleEls.length - 1];
+        var titleContentEl = titleContentEls[titleContentEls.length - 1];
+        titleEl.style['padding-top'] = '100px';
+        titleContentEl.style['-webkit-transform'] = 'translate3d(0,-70px, 0)';
+        titleContentEl.style['-webkit-transition'] = '0.5s';
+      }
+    }, function failureCallback(response) {
+        
+    });
+  }
 
 
   $scope.showModal = function(templateUrl, url) {

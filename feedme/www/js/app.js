@@ -251,9 +251,13 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
       if(card.summaries.length > 0) {
         card.summary = card.summaries[0];
         var titleEls = document.getElementsByClassName('title');
+        var titleContentEls = document.getElementsByClassName('title-content');
         console.log('titles', document.getElementsByClassName('title'));
         var titleEl = titleEls[titleEls.length - 1];
-        titleEl.style['padding-bottom'] = '100px';
+        var titleContentEl = titleContentEls[titleContentEls.length - 1];
+        titleEl.style['padding-top'] = '100px';
+        titleContentEl.style['-webkit-transform'] = 'translate3d(0,-70px, 0)';
+        titleContentEl.style['-webkit-transition'] = '0.5s';
       }
     }, function failureCallback(response) {
         
