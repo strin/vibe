@@ -5,7 +5,6 @@ import flou.user.pred_db as pred_db
 import flou.channel.rss as rss
 import flou.channel.imgur as imgur
 from flou.utils import Timer
-
 import flou.user.db as user_db
 
 from multiprocessing import Process
@@ -15,6 +14,8 @@ import random
 
 import urllib2
 import urllib
+
+from pprint import pprint
 
 from bs4 import BeautifulSoup
 
@@ -54,10 +55,14 @@ class FeedHandler(web.RequestHandler):
           print '[feed] get feed content'
           userid = self.get_argument('userid')
           print '[feed] userid', userid
-          user_links_sorted = pred_db.get_links_sorted(userid)
-          print '[feed] user links sorted', user_links_sorted
           user_links_read = user_db.get_links_by_user(userid)
           user_links_read = set(user_links_read)
+          
+          preds_sorted = pred_db.get_link_pred_sorted(userid)
+          preds_sorted = [(link, pred) for (link, pred) in preds_sorted if link not in user_links_read]
+          print '[feed] user links sorted'
+          pprint(preds_sorted[:10])
+          user_links_sorted = [link for (link, pred) in preds_sorted]
 
           self.set_header("Access-Control-Allow-Origin", "http://localhost:8100")
 
@@ -122,10 +127,8 @@ class SummaryHandler(web.RequestHandler):
 
         response = urllib2.urlopen('http://www.textteaser.com/summary?%s' % urllib.urlencode({'url': url}))
         soup = BeautifulSoup(response.read(), 'html.parser')
-        print soup
         summaries = []
         for item in soup.find_all('li'):
-          print item
           summaries.append(item.get_text())
 
         self.write({

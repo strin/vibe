@@ -13,8 +13,8 @@ from flou.core.learn.perceptron import Perceptron
 from flou.utils import colorize
 
 EXTRACTION_QUIESCENCE = 300 # seconds between two extractins.
-LEARNING_RATE = 1.
-NUM_ITER = 100
+LEARNING_RATE = 0.1
+NUM_ITER = 10
 
 while True:
     userids = user_db.get_userids()
