@@ -13,6 +13,10 @@ import time
 import json
 import random
 
+import urllib2
+import urllib
+
+from bs4 import BeautifulSoup
 
 def fetch_process_method():
     while True:
@@ -110,6 +114,23 @@ class SwipeHandler(web.RequestHandler):
         })
 
 
+class SummaryHandler(web.RequestHandler):
+    def get(self):
+        url = self.get_argument('url')
+
+        self.set_header("Access-Control-Allow-Origin", "http://localhost:8100")
+
+        response = urllib2.urlopen('http://www.textteaser.com/summary?%s' % urllib.urlencode({'url': url}))
+        soup = BeautifulSoup(response.read(), 'html.parser')
+        print soup
+        summaries = []
+        for item in soup.find_all('li'):
+          print item
+          summaries.append(item.get_text())
+
+        self.write({
+          'summaries': summaries
+        })
 
 handlers = [
     # try
@@ -119,6 +140,7 @@ handlers = [
     (r"/(.*\.js)", web.StaticFileHandler, {"path": "frontend/js/"}),
     (r"/vibes/?", FeedHandler),
     (r"/swipe/?", SwipeHandler),
+    (r"/summary", SummaryHandler),
 ]
 
 settings = {
