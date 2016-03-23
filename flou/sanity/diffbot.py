@@ -6,14 +6,9 @@ import json
 def extract_reader_html(url):
     response = urllib2.urlopen('http://api.diffbot.com/v3/article?%s'
                         % urllib.urlencode({
-                            'token': '006799de5f2050af55268df703a73840',
+                            'token': 'ee50b492c2f1802eefcb7316badeb18f',
                             'url': url
                         }))
-    print 'url', 'http://api.diffbot.com/v3/article?%s' \
-                        % urllib.urlencode({
-                            'token': '006799de5f2050af55268df703a73840',
-                            'url': url
-                        })
     data = json.load(response)['objects'][0]
     images = data.get('images')
     image = ''
