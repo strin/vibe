@@ -84,3 +84,19 @@ def get_links_sorted(userid):
         else:
             return []
 
+
+def get_link_pred_sorted(userid):
+    '''
+    get (link, prediction) pairs
+    '''
+    with DBConn() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+                       SELECT link, prediction FROM predict WHERE userid=:userid
+                       ORDER BY prediction DESC
+                       """, dict(userid=userid))
+        rows = cursor.fetchall()
+        if rows:
+            return [(row['link'], row['prediction']) for row in rows]
+        else:
+            return []
