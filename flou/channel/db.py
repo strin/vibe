@@ -53,7 +53,6 @@ def get_all_entries():
                        SELECT * FROM feed order by date DESC limit 1000
                        """)
         rows = cursor.fetchall()
-        print rows
         return rows
     return None
 
