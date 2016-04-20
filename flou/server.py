@@ -67,7 +67,9 @@ class FeedHandler(web.RequestHandler):
           self.set_header("Access-Control-Allow-Origin", "http://localhost:8100")
 
           # get links by preference.
+          print 'getting all entires'
           entries = db.get_all_entries()
+          print 'getting all entires [done]'
           feeds = []
           feed_by_link = {}
           all_links = set()

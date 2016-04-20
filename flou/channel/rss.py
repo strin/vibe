@@ -20,6 +20,7 @@ def fetch(url, max_count=30):
                 print colorize('[rss link] [source: %s] %s' % (url, link), 'blue')
                 if db.get_by_url(link): # skip extraction if url exists in db. save extractor quota.
                   continue
+                import pdb; pdb.set_trace()
                 # use diffbot only to extract contact.
                 data = extract_reader_html(link)
                 html = data.get('content')
@@ -28,9 +29,10 @@ def fetch(url, max_count=30):
                 if not cover:
                     continue
                 db.add_entry(link, title, kind='article', data=json.dumps(data))
-                print colorize('[rss extracted] [source: %s] %s' % (url, link), 'green')
             except Exception as e:
+                print colorize('[rss extraction] [source: %s] %s' % (url, link), 'green')
                 print '[error] extract link failed', link, e.message
+                raise e
 
 
 if __name__ == '__main__':

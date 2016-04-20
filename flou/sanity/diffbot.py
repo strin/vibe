@@ -6,7 +6,7 @@ import json
 def extract_reader_html(url):
     response = urllib2.urlopen('http://api.diffbot.com/v3/article?%s'
                         % urllib.urlencode({
-                            'token': 'ee50b492c2f1802eefcb7316badeb18f',
+                            'token': '75cfd1a36dcbb3eb786fcb7111113a37',
                             'url': url
                         }))
     data = json.load(response)['objects'][0]
@@ -29,7 +29,7 @@ def extract_reader_html(url):
     return {
         'content': data.get('html'),
         'title': data.get('title'),
-        'date': data.get('date'),
+        'date': data.get('estimatedDate'),
         'author': data.get('author'),
         'cover': image,
         'tags': data.get('tags')
