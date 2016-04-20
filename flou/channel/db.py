@@ -18,6 +18,7 @@ class DBConn(object):
         conn.execute("""CREATE TABLE IF NOT EXISTS feed
                     (title text,
                     link text,
+                    date DATETIME,
                     type text,
                     data text)
                     """)
@@ -49,14 +50,15 @@ def get_all_entries():
     with DBConn() as conn:
         cursor = conn.cursor()
         cursor.execute("""
-                       SELECT * FROM feed
+                       SELECT * FROM feed order by date DESC limit 1000
                        """)
         rows = cursor.fetchall()
+        print rows
         return rows
     return None
 
 
-def add_entry(link, title, kind, data):
+def add_entry(link, title, date, kind, data):
     '''
     >>> add_entry('https://github.com/samyk/magspoof', 'MagsProof', 'MagSpoof - credit card/magstripe spoofer')
     '''
@@ -69,16 +71,19 @@ def add_entry(link, title, kind, data):
                     INSERT INTO feed
                         (title,
                         link,
+                        date,
                         type,
                         data)
                     VALUES
                        (:title,
                        :link,
+                       :date,
                        :type,
                        :data)
                     """,
                     dict(title=title,
                          link=link,
+                         date=date.strftime('%y-%m-%d %H:%M:%S'),
                          type=kind,
                          data=data)
                     )

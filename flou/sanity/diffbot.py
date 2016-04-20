@@ -29,7 +29,7 @@ def extract_reader_html(url):
     return {
         'content': data.get('html'),
         'title': data.get('title'),
-        'date': data.get('estimatedDate'),
+        'date': data.get('date'),
         'author': data.get('author'),
         'cover': image,
         'tags': data.get('tags')

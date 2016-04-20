@@ -19,6 +19,7 @@ from pprint import pprint
 
 from bs4 import BeautifulSoup
 
+
 def fetch_process_method():
     while True:
         # fetch hacker news.
@@ -57,7 +58,7 @@ class FeedHandler(web.RequestHandler):
           user_links_read = user_db.get_links_by_user(userid)
           user_links_read = set(user_links_read)
           print '[feed] user links read count', len(user_links_read)
-          
+
           preds_sorted = pred_db.get_link_pred_sorted(userid)
           preds_sorted = [(link, pred) for (link, pred) in preds_sorted if link not in user_links_read]
           print '[feed] user links sorted'
