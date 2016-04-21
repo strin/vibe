@@ -62,7 +62,7 @@ class FeedHandler(web.RequestHandler):
             print '[feed] get feed content'
             userid = self.get_argument('userid')
             print '[feed] userid', userid
-            day = datetime.now().strftime('%y.%m.%d')
+            day = datetime.now().strftime('%y.%m.%d.%H')
 
             # retrive the links already read.
             user_links_read = user_db.get_links_by_user(userid)
