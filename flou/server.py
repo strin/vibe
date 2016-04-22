@@ -71,6 +71,7 @@ class FeedHandler(web.RequestHandler):
         
             # retrive latest news contests.
             entries = db.get_all_entries()
+            print '[feed] len(entries)', len(entries)
             feeds = []
             feed_by_link = {}
             all_links = set()
@@ -100,10 +101,10 @@ class FeedHandler(web.RequestHandler):
 
                 other_links = list(all_links.difference(user_links_sorted))
                 random.shuffle(other_links)
-
-                recommend_links = (user_links_sorted + other_links)[:max_count]
+                
+                recommend_links = [link for link in (user_links_sorted + other_links) if link not in user_links_read]
+                recommend_links = recommend_links[:max_count]
                 DAY_CACHE[userid][day] = recommend_links
-
 
             # retrieve feed content.
             for link in recommend_links:
