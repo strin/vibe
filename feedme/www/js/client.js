@@ -1,5 +1,5 @@
 function getUserId(Ionic) {
-	return '90bc5b12-42ab-4dfb-8b5c-df306fef8471'; // fix to be me.
+	// return '90bc5b12-42ab-4dfb-8b5c-df306fef8471'; // fix to be me.
 
 	// kick off the platform web client
 	Ionic.io();

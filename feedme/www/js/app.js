@@ -315,10 +315,10 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
     $http.post($global.backend + '/swipe', {
       'userid': getUserId(Ionic),
       'link': url,
-      'action': 'like'
+      'action': 'dislike'
     }).then(function successCallback(response) {
     }, function failureCallback(response) {
-        console.error('swipe to like failed', response);
+        console.error('swipe to dislike failed', response);
     });
 
     $scope.addCard();
@@ -331,7 +331,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'ionic.contrib.ui.cards
     $http.post($global.backend + '/swipe', {
       'userid': getUserId(Ionic),
       'link': url,
-      'action': 'dislike'
+      'action': 'like'
     }).then(function successCallback(response) {
     }, function failureCallback(response) {
         console.error('swipe to like failed', response);

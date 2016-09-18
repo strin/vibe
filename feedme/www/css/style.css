@@ -185,8 +185,8 @@ swipe-card.pop-in {
     position: fixed;
     pointer-events: none;
     top: 45%;
-    left: 10px;
-    color: #33cd5f;
+    right: 10px;
+    color: #ef473a;
     font-size: 150px;
     font-family: helvetica neue;
     font-weight:  bold;
@@ -198,8 +198,8 @@ swipe-card.pop-in {
     position: fixed;
     pointer-events: none;
     top: 45%;
-    right: 10px;
-    color: #ef473a;
+    left: 10px;
+    color: #33cd5f;
     font-size: 150px;
     font-family: helvetica neue;
     font-weight:  bold;

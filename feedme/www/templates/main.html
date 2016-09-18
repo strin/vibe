@@ -6,7 +6,7 @@
     <h1><ion-spinner class="spinner-energized">Loading</ion-spinner></h1>
   </div>
   <swipe-cards>
-    <div class="ion-heart-broken no-text" data-pack="default" data-tags="love"></div>
+    <div class="ion-heart yes-text" data-pack="default" data-tags="love"></div>
     <swipe-card ng-repeat="card in cards" on-destroy="cardDestroyed(cardIndex)" on-card-swipe="cardSwiped(cardIndex)" on-card-swipe-left="cardSwipedLeft(cardIndex)" on-card-swipe-right="cardSwipedRight(cardIndex)" id="cardCtrl">
       <div class="swipe-ctrl" ng-click="showImage(card);" style="z-index: -{{cardIndex}}"> <!--ui-sref="content({cardId: {{card.cardId}}})">
         <!--window.location.href='#/content/{{card.cardId}}'-->
@@ -55,6 +55,6 @@
 
 
     </swipe-card>
-    <div class="ion-heart yes-text" data-pack="default" data-tags="love"></div>
+    <div class="ion-heart-broken no-text" data-pack="default" data-tags="love"></div>
   </swipe-cards>
 </ion-pane>

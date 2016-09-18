@@ -378,8 +378,8 @@
       },
       link: function($scope, $element, $attr, swipeCards) {
         var el = $element[0];
-        var leftText = $element.parent()[0].querySelector('.no-text');
-        var rightText = $element.parent()[0].querySelector('.yes-text');
+        var leftText = $element.parent()[0].querySelector('.yes-text');
+        var rightText = $element.parent()[0].querySelector('.no-text');
 
         // Instantiate our card view
         var swipeableCard = new SwipeableCardView({
