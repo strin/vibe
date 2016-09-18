@@ -62,12 +62,26 @@ class FeedHandler(web.RequestHandler):
             print '[feed] get feed content'
             userid = self.get_argument('userid')
             print '[feed] userid', userid
-            day = datetime.now().strftime('%y.%m.%d')
+            day = datetime.now().strftime('%y.%m.%d.%H')
 
             # retrive the links already read.
             user_links_read = user_db.get_links_by_user(userid)
             user_links_read = set(user_links_read)
             print '[feed][count] user links read', len(user_links_read)
+        
+            # retrive latest news contests.
+            entries = db.get_all_entries()
+            print '[feed] len(entries)', len(entries)
+            feeds = []
+            feed_by_link = {}
+            all_links = set()
+            # TODO: modify feed_db so that link is the primary key.
+            # do this more efficiently.
+            for entry in entries:
+                feed = dict(entry)
+                link = feed.get('link')
+                feed_by_link[link] = feed
+                all_links.add(link)
 
             # generate news recommendation (as links).
             if userid not in DAY_CACHE:
@@ -85,27 +99,12 @@ class FeedHandler(web.RequestHandler):
                 pprint(preds_sorted[:10])
                 print '[feed][count] user recommendations', len(user_links_sorted)
 
-                # get links by preference.
-                print 'getting all entires'
-                entries = db.get_all_entries()
-                print 'getting all entires [done]'
-                feeds = []
-                feed_by_link = {}
-                all_links = set()
-                # TODO: modify feed_db so that link is the primary key.
-                # do this more efficiently.
-                for entry in entries:
-                    feed = dict(entry)
-                    link = feed.get('link')
-                    feed_by_link[link] = feed
-                    all_links.add(link)
-
                 other_links = list(all_links.difference(user_links_sorted))
                 random.shuffle(other_links)
-
-                recommend_links = (user_links_sorted = other_links)[:max_count]
+                
+                recommend_links = [link for link in (user_links_sorted + other_links) if link not in user_links_read]
+                recommend_links = recommend_links[:max_count]
                 DAY_CACHE[userid][day] = recommend_links
-
 
             # retrieve feed content.
             for link in recommend_links:
@@ -121,6 +120,9 @@ class FeedHandler(web.RequestHandler):
                     feed['data'] = json.dumps(data)
 
                     feeds.append(feed)
+
+            # write back to client.
+            print '[feed] writing back', len(feeds), ' feeds'
 
             self.write({
                 'feed': feeds
