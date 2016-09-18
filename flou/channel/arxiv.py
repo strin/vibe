@@ -8,9 +8,11 @@ from __future__ import print_function
 from pprint import pprint
 import feedparser
 import requests
+import traceback
 import json
 
 import flou.channel.db as db
+from flou.utils import colorize
 import dateparser
 
 DEFAULT_CATEGORY = 'cat:cs.CV+OR+cat:cs.AI+OR+cat:cs.LG+OR+cat:cs.CL+OR+cat:cs.NE+OR+cat:stat.ML'
@@ -34,20 +36,27 @@ def fetch(max_count=30, category=DEFAULT_CATEGORY):
                   max_count=max_count))
     response = requests.get(API_URL + '?' + query).content
     result = feedparser.parse(response)
-    for e in result.entries:
-        link = e['link']
-        title = clean_title(e['title'])
-        abstract = clean_abstract(e['summary'])
-        date = dateparser.parse(e['updated'])
-        data = {
-            'link': link,
-            'title': title,
-            'date': date.isoformat(),
-            'authors': e['authors'],
-            'abstract': abstract
-        }
-        print(data)
-        db.add_entry(link, title, date, kind='paper', data=json.dumps(data))
+    if result.entries:
+        try:
+            for e in result.entries:
+                link = e['link']
+                title = clean_title(e['title'])
+                abstract = clean_abstract(e['summary'])
+                date = dateparser.parse(e['updated'])
+                data = {
+                    'link': link,
+                    'title': title,
+                    'date': date.isoformat(),
+                    'authors': e['authors'],
+                    'abstract': abstract
+                }
+                print(data)
+                db.add_entry(link, title, date, kind='paper', data=json.dumps(data))
+                print(colorize('[channel arixv] %s' % link, 'blue'))
+        except Exception as e:
+            print(colorize('[channel arixv][error] %s' % link), 'red')
+            print(e.message)
+            traceback.print_exc(file=sys.stdout)
 
 
 if __name__ == '__main__':

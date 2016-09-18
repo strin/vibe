@@ -2,6 +2,7 @@ from tornado import (ioloop, web)
 
 import flou.channel.db as db
 import flou.user.pred_db as pred_db
+import flou.channel.arxiv as channel_arxiv
 import flou.channel.rss as rss
 import flou.channel.imgur as imgur
 from flou.utils import Timer
@@ -19,28 +20,6 @@ import urllib
 from pprint import pprint
 
 from bs4 import BeautifulSoup
-
-
-def fetch_process_method():
-    while True:
-        # fetch hacker news.
-        max_count = 1000
-        urls = ['http://hnrss.org/newest',
-                'http://www.kurzweilai.net/feed',
-                'http://www.engadget.com/rss-full.xml',
-                'http://rss.sciam.com/ScientificAmerican-Global',
-                'http://www.theverge.com/rss/full.xml',
-                'http://www.technologyreview.com/rss/rss.aspx',
-                'http://feeds.newscientist.com/science-news',
-                'http://venturebeat.com/category/cloud/feed/']
-        for url in urls:
-            rss.fetch(url, max_count=max_count)
-        time.sleep(3600)
-
-
-fetch_process = Process(target=fetch_process_method)
-fetch_process.start()
-
 
 DAY_CACHE = {}
 
@@ -68,8 +47,8 @@ class FeedHandler(web.RequestHandler):
             user_links_read = user_db.get_links_by_user(userid)
             user_links_read = set(user_links_read)
             print '[feed][count] user links read', len(user_links_read)
-        
-            # retrive latest news contests.
+
+            # retrive latest news contents.
             entries = db.get_all_entries()
             print '[feed] len(entries)', len(entries)
             feeds = []
@@ -84,30 +63,31 @@ class FeedHandler(web.RequestHandler):
                 all_links.add(link)
 
             # generate news recommendation (as links).
-            if userid not in DAY_CACHE:
-                DAY_CACHE[userid] = {}
+            #if userid not in DAY_CACHE:
+            #    DAY_CACHE[userid] = {}
 
-            if day in DAY_CACHE[userid]:
-                print '[feed][server path] cached'
-                recommend_links = DAY_CACHE[userid][day]
-            else:
-                print '[feed][server path] new'
-                preds_sorted = pred_db.get_link_pred_sorted(userid)
-                preds_sorted = [(link, pred) for (link, pred) in preds_sorted]
-                user_links_sorted = [link for (link, pred) in preds_sorted]
-                print '[feed] user links sorted'
-                pprint(preds_sorted[:10])
-                print '[feed][count] user recommendations', len(user_links_sorted)
+            #if day in DAY_CACHE[userid]:
+            #    print '[feed][server path] cached'
+            #    recommend_links = DAY_CACHE[userid][day]
+            #else:
+            #    print '[feed][server path] new'
+            #    preds_sorted = pred_db.get_link_pred_sorted(userid)
+            #    preds_sorted = [(link, pred) for (link, pred) in preds_sorted]
+            #    user_links_sorted = [link for (link, pred) in preds_sorted]
+            #    print '[feed] user links sorted'
+            #    pprint(preds_sorted[:10])
+            #    print '[feed][count] user recommendations', len(user_links_sorted)
 
-                other_links = list(all_links.difference(user_links_sorted))
-                random.shuffle(other_links)
-                
-                recommend_links = [link for link in (user_links_sorted + other_links) if link not in user_links_read]
-                recommend_links = recommend_links[:max_count]
-                DAY_CACHE[userid][day] = recommend_links
+            #    other_links = list(all_links.difference(user_links_sorted))
+            #    random.shuffle(other_links)
+
+            #    recommend_links = [link for link in (user_links_sorted + other_links) if link not in user_links_read]
+            #    recommend_links = recommend_links[:max_count]
+            #    DAY_CACHE[userid][day] = recommend_links
 
             # retrieve feed content.
-            for link in recommend_links:
+            #for link in recommend_links:
+            for link in all_links:
                 if link in feed_by_link and link not in user_links_read:
                     feed = feed_by_link[link]
                     data = feed.get('data')
